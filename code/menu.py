@@ -39,7 +39,7 @@ class Menu:
                     group=self.entity)
 
         # -------------------------- Tiles --------------------------
-        tmxdata = load_pygame("../map/menu.tmx")
+        tmxdata = load_pygame("../map/menu/menu.tmx")
         layer = tmxdata.get_layer_by_name('Tile Layer 1')
 
         for x, y, surf in layer.tiles():
