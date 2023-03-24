@@ -34,7 +34,7 @@ class Menu:
         self.logo_rect = self.logo_image.get_rect(center=(self.game.tile_size * 25, self.game.tile_size * 2))
 
         # -------------------------- Player --------------------------
-        Menu_Player(surfaces=import_folder("../graphics/characters/basic", self.game.scale, "_sword_idle"),
+        Menu_Player(surfaces=import_folder("../graphics/characters/basic/sword/idle", self.game.scale),
                     pos=(self.game.tile_size * 14, self.game.tile_size * 5 + self.game.tile_size * 0.15),
                     group=self.entity)
 
