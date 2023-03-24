@@ -2,6 +2,7 @@ import pygame
 import sys
 
 from menu import Menu
+from level import Level
 from settings import *
 
 
@@ -35,6 +36,8 @@ class Game:
 
         # Setup
         self.menu = Menu(self)
+        self.level = None
+
 
 
     def run(self):
@@ -50,8 +53,15 @@ class Game:
                 case "menu":
                     self.menu.run()
                     self.menu.event_loop(events)
+                case "level":
+                    self.level.run()
+                    self.level.event_loop(events)
 
             pygame.display.update()
+
+    def create_level(self):
+        self.level = Level(self)
+        self.window = "level"
 
     def stop(self):
         pygame.quit()

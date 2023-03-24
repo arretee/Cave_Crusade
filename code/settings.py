@@ -18,17 +18,69 @@ pathes = {
             "idle": "../graphics/characters/basic/bow/idle",
             "run": "../graphics/characters/basic/bow/run",
         },
-        "pique": {
-            "attack": "../graphics/characters/basic/pique/attack",
-            "idle": "../graphics/characters/basic/pique/idle",
-            "run": "../graphics/characters/basic/pique/run",
-        },
         "sword": {
             "attack": "../graphics/characters/basic/sword/attack",
             "idle": "../graphics/characters/basic/sword/idle",
             "run": "../graphics/characters/basic/sword/run",
         },
     },
-    "enemy": {},
+    "enemy": {
+        "barbarian": {
+            "attack": "../graphics/characters/barbarian/attack",
+            "idle": "../graphics/characters/barbarian/idle",
+            "run": "../graphics/characters/barbarian/run"
+        },
+        "dwarf": {
+            "attack": "../graphics/characters/dwarf/attack",
+            "idle": "../graphics/characters/dwarf/idle",
+            "run": "../graphics/characters/dwarf/run"
+        },
+        "guard": {
+            "attack": "../graphics/characters/guard/attack",
+            "idle": "../graphics/characters/guard/idle",
+            "run": "../graphics/characters/guard/run"
+        },
+        "knight_blue": {
+            "attack": "../graphics/characters/knight_blue/attack",
+            "idle": "../graphics/characters/knight_blue/idle",
+            "run": "../graphics/characters/knight_blue/run"
+        },
+        "knight_green": {
+            "attack": "../graphics/characters/knight_green/attack",
+            "idle": "../graphics/characters/knight_green/idle",
+            "run": "../graphics/characters/knight_green/run"
+        },
+        "knight_red": {
+            "attack": "../graphics/characters/knight_red/attack",
+            "idle": "../graphics/characters/knight_red/idle",
+            "run": "../graphics/characters/knight_red/run"
+        },
+        "knight_yellow": {
+            "attack": "../graphics/characters/knight_yellow/attack",
+            "idle": "../graphics/characters/knight_yellow/idle",
+            "run": "../graphics/characters/knight_yellow/run"
+        },
+        "lizard": {
+            "attack": "../graphics/characters/lizard/attack",
+            "idle": "../graphics/characters/lizard/idle",
+            "run": "../graphics/characters/lizard/run"
+        },
+        "mooseman": {
+            "attack": "../graphics/characters/mooseman/attack",
+            "idle": "../graphics/characters/mooseman/idle",
+            "run": "../graphics/characters/mooseman/run"
+        },
+        "rhino": {
+            "attack": "../graphics/characters/rhino/attack",
+            "idle": "../graphics/characters/rhino/idle",
+            "run": "../graphics/characters/rhino/run"
+        },
+        "troll": {
+            "attack": "../graphics/characters/troll/attack",
+            "idle": "../graphics/characters/troll/idle",
+            "run": "../graphics/characters/troll/run"
+        },
+
+    },
     "items": {},
 }

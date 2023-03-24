@@ -1,6 +1,7 @@
 import pygame
 from pytmx import load_pygame
 
+from settings import pathes
 from support_functions import import_folder
 from classes import Tile, Button, Menu_Player
 
@@ -34,7 +35,7 @@ class Menu:
         self.logo_rect = self.logo_image.get_rect(center=(self.game.tile_size * 25, self.game.tile_size * 2))
 
         # -------------------------- Player --------------------------
-        Menu_Player(surfaces=import_folder("../graphics/characters/basic/sword/idle", self.game.scale),
+        Menu_Player(surfaces=import_folder(pathes["character"]["bow"]["idle"], self.game.scale),
                     pos=(self.game.tile_size * 14, self.game.tile_size * 5 + self.game.tile_size * 0.15),
                     group=self.entity)
 
@@ -60,7 +61,7 @@ class Menu:
             , font=pygame.font.SysFont('cambria', int(self.game.tile_size * 1.4))
             , size=(self.game.tile_size * 5.3, self.game.tile_size * 2)
             , group=self.buttons
-            , func=self.play
+            , func=self.game.create_level
         )
 
         # Levels
@@ -133,9 +134,6 @@ class Menu:
 
 
     # ----------------------------------------------------- Buttons Functions -----------------------------------------------------
-    def play(self):
-        pass
-
     def level_select(self):
         pass
 
