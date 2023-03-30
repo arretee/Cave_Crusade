@@ -14,8 +14,8 @@ class Game:
         self.screen_height = pygame.display.Info().current_h
 
         # self.screen_width, self.screen_height = 1920, 1080
-        # self.screen_width, self.screen_height = 1600, 900
-        # self.screen_width, self.screen_height = 1280, 720
+        self.screen_width, self.screen_height = 1600, 900
+        self.screen_width, self.screen_height = 1280, 720
 
 
         if [self.screen_width, self.screen_height] in screen_resolutions:
@@ -48,7 +48,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.dt = self.clock.tick() / 1000
+            self.dt = self.clock.tick(120)
             match self.window:
                 case "menu":
                     self.menu.run()
