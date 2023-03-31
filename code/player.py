@@ -3,12 +3,15 @@ import pygame
 
 from support_functions import import_folder
 from settings import *
+from classes import Timer
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game, pos, obstacle_sprites):
         super().__init__()
 
+        # Main data / Vriabels
+        self.data = characters_data["player"]
         self.game = game
         self.screen = game.screen
         self.setup()
@@ -17,18 +20,26 @@ class Player(pygame.sprite.Sprite):
         # Statuses
         self.direction = pygame.math.Vector2()
 
-        self.speed = self.game.scale / 2
-        self.gravity_speed = self.game.scale / 75
-        self.jump_speed = -self.game.scale
+        self.speed = self.game.scale / self.data["speed"]
+        self.gravity_speed = self.game.scale / self.data["gravity_speed"]
+        self.jump_speed = self.game.scale / self.data["jump_speed"]
 
         self.status = "idle"
         self.weapon = "basic"
         self.facing = "left"
         self.onGround = False
 
+        self.timers = {
+            "sword_kd": Timer(self.data["sword_kd"]),
+            "axe_kd": Timer(self.data["axe_kd"]),
+            "bow_kd": Timer(self.data["bow_kd"]),
+        }
+
+        self.attack_rect = None
+
         # Animations
         self.animation_index = 0
-        self.animation_speed = 0.07
+        self.animation_speed = self.data["animation_speed"]
         self.animation = self.animations[f"{self.weapon}_{self.status}"]
 
         # General
@@ -36,8 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.x_change = 0
         self.image = self.animations["basic_idle"][0]
         self.rect = self.image.get_rect(center=pos)
-        self.hitbox = self.rect.inflate(-self.game.scale * 8, -self.game.scale * 6)
-
+        self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * self.data["y_inflate"])
 
     def setup(self):
         # Textures
@@ -55,7 +65,7 @@ class Player(pygame.sprite.Sprite):
                 scale=scale
             )
 
-    # -------------------------------------- User Input / Movement --------------------------------------
+    # -------------------------------------- User Input - Movement --------------------------------------
     def move(self, speed):
         self.hitbox.x += int(self.direction.x * speed)
         self.collision('horizontal')
@@ -64,31 +74,29 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.center = (self.hitbox.centerx + (self.x_change if self.facing == "right" else -self.x_change), self.hitbox.centery + self.y_change)
 
-
     def event_loop(self, events):
         keys = pygame.key.get_pressed()
 
         for event in events:
             if event.type == pygame.KEYDOWN:
                 # Weapon Swap
-                if event.key == pygame.K_4:
-                    self.weapon = "basic"
-                    self.switch_stasuses()
-                elif event.key == pygame.K_1:
-                    self.weapon = "axe"
-                    self.switch_stasuses()
-                elif event.key == pygame.K_2:
-                    self.weapon = "bow"
-                    self.switch_stasuses()
-                elif event.key == pygame.K_3:
-                    self.weapon = "sword"
-                    self.switch_stasuses()
+                if self.status != "attack":
+                    if event.key == pygame.K_4:
+                        self.weapon = "basic"
+                        self.switch_stasuses()
+                    elif event.key == pygame.K_1:
+                        self.weapon = "axe"
+                        self.switch_stasuses()
+                    elif event.key == pygame.K_2:
+                        self.weapon = "bow"
+                        self.switch_stasuses()
+                    elif event.key == pygame.K_3:
+                        self.weapon = "sword"
+                        self.switch_stasuses()
 
                 # Jump
                 if event.key == pygame.K_SPACE and self.onGround:
                     self.jump()
-
-
 
         # Movement
         if keys[pygame.K_a]:
@@ -108,6 +116,12 @@ class Player(pygame.sprite.Sprite):
             self.switch_stasuses()
 
 
+        # Attack
+        mouse_buttons = pygame.mouse.get_pressed()
+        if mouse_buttons[0]:
+            if not self.weapon == "basic":
+                self.attack()
+
     def gravity(self):
         self.direction.y += self.gravity_speed
 
@@ -120,16 +134,27 @@ class Player(pygame.sprite.Sprite):
         self.y_change = 0
         self.x_change = 0
 
+        # Get Change of X and Y for image
         if self.weapon != "basic":
             self.y_change = -self.game.scale * 2
 
         if self.weapon == "basic" and self.status == "run":
             self.y_change = -self.game.scale * 2
 
+        if self.weapon == "sword" and self.status == "attack":
+            self.y_change = -self.game.scale * 0.9
+
+
+        if self.weapon == "bow" and self.status != "idle":
+            if self.status == "run":
+                self.x_change = self.game.scale * 4
+            else:
+                self.x_change = self.game.scale * 8
+
+
 
         self.image = self.animations[f"{self.weapon}_{self.status}"][0]
         self.rect = self.image.get_rect(center=self.hitbox.center)
-        self.hitbox = self.rect.inflate(-self.game.scale * 8, -self.game.scale * 6)
 
 
         self.animation = self.animations[f"{self.weapon}_{self.status}"]
@@ -156,9 +181,30 @@ class Player(pygame.sprite.Sprite):
                     elif self.direction.y < 0:
                         self.hitbox.top = sprite.rect.bottom
 
+
+    # -------------------------------------- User Input - Attacks --------------------------------------
+    def attack(self):
+        if not self.timers[f"{self.weapon}_kd"].active:
+            self.timers[f"{self.weapon}_kd"].activate()
+
+            self.status = "attack"
+            self.switch_stasuses()
+
+            if self.weapon != "bow":
+                if self.facing == "right":
+                    self.attack_rect = pygame.Rect((self.hitbox.right, self.hitbox.centery), (self.game.scale, self.game.scale))
+                if self.facing == "left":
+                    self.attack_rect = pygame.Rect((self.hitbox.left + self.game.scale, self.hitbox.centery), (self.game.scale, self.game.scale))
+
     # -------------------------------------- Animations --------------------------------------
     def animate(self):
         self.animation_index += self.animation_speed
+
+        if self.animation_index >= len(self.animation) and self.status == "attack":
+            self.attack_rect = None
+            self.animation_index = 0
+            self.status = "idle"
+            self.switch_stasuses()
 
         if self.animation_index >= len(self.animation):
             self.animation_index = 0
@@ -170,11 +216,23 @@ class Player(pygame.sprite.Sprite):
 
         self.image = image
         self.rect = self.image.get_rect(center=self.hitbox.center)
-        self.hitbox = self.rect.inflate(-self.game.scale * 8, -self.game.scale * 6)
+        # self.hitbox = self.rect.inflate(-self.game.scale * 8, -self.game.scale * 6)
 
     # -------------------------------------- Update And Draw --------------------------------------
 
     def update(self, events):
+        for timer in self.timers.values():
+            timer.update()
+
+        if self.attack_rect is not None:
+            if self.facing == "right":
+                self.attack_rect = pygame.Rect((self.hitbox.right, self.hitbox.centery),
+                                               (self.game.scale * 5, self.game.scale * 3))
+            if self.facing == "left":
+                self.attack_rect = pygame.Rect((self.hitbox.left - self.game.scale * 5, self.hitbox.centery),
+                                               (self.game.scale * 5, self.game.scale * 3))
+
+
         self.event_loop(events)
         self.gravity()
         self.animate()
@@ -182,4 +240,5 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
-
+        if self.attack_rect is not None:
+            pygame.draw.rect(self.screen, "blue", self.attack_rect)

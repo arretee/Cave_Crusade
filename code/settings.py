@@ -84,3 +84,23 @@ pathes = {
     },
     "items": {},
 }
+
+
+characters_data = {
+    "player": {
+        # basic parms - game scale / value
+        "speed" : 2,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+        "sword_kd": 3000,
+        "axe_kd": 2000,
+        "bow_kd": 5000,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -8,
+        "y_inflate": -6,
+    },
+}
