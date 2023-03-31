@@ -92,9 +92,9 @@ characters_data = {
         "speed" : 2,
         "gravity_speed": 75,
         "jump_speed": -1,
-        "sword_kd": 3000,
-        "axe_kd": 2000,
-        "bow_kd": 5000,
+        "sword_kd": 2000,
+        "axe_kd": 1000,
+        "bow_kd": 4000,
 
         # animation value
         "animation_speed": 0.07,
@@ -102,6 +102,12 @@ characters_data = {
         # Hit box - game scale * value
         "x_inflate": -8,
         "y_inflate": -6,
+
+
+        # Hits KD - parms
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+        "MoveAfterHit_kd": 500,
     },
 
     "blue_knigt": {
@@ -114,15 +120,24 @@ characters_data = {
         "animation_speed": 0.07,
 
         # Hit box - game scale * value
-        "x_inflate": -8,
-        "y_inflate": -6,
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
 
         # X Change - Scale * Value
         "idle": True,
         "x_idle": 0,
-        "y_idle": -2,
+        "y_idle": -4,
         "run": True,
         "x_run": 0,
-        "y_run": -2,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
     },
 }

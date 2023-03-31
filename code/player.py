@@ -7,12 +7,13 @@ from classes import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, game, pos, obstacle_sprites):
+    def __init__(self, game, pos, enemies, obstacle_sprites):
         super().__init__()
 
         # Main data / Vriabels
         self.data = characters_data["player"]
         self.game = game
+        self.enemies = enemies
         self.screen = game.screen
         self.setup()
         self.obstacle_sprites = obstacle_sprites
@@ -30,9 +31,13 @@ class Player(pygame.sprite.Sprite):
         self.onGround = False
 
         self.timers = {
+            # Weapons KD
             "sword_kd": Timer(self.data["sword_kd"]),
             "axe_kd": Timer(self.data["axe_kd"]),
             "bow_kd": Timer(self.data["bow_kd"]),
+
+            # Hit KD
+            "MoveAfterHit_kd": Timer(self.data["MoveAfterHit_kd"]),
         }
 
         self.attack_rect = None
@@ -99,14 +104,15 @@ class Player(pygame.sprite.Sprite):
                     self.jump()
 
         # Movement
-        if keys[pygame.K_a]:
-            self.direction.x = -1
-            self.facing = "left"
-        elif keys[pygame.K_d]:
-            self.direction.x = 1
-            self.facing = "right"
-        else:
-            self.direction.x = 0
+        if not self.timers["MoveAfterHit_kd"].active:
+            if keys[pygame.K_a]:
+                self.direction.x = -1
+                self.facing = "left"
+            elif keys[pygame.K_d]:
+                self.direction.x = 1
+                self.facing = "right"
+            else:
+                self.direction.x = 0
 
         if self.status == "idle" and self.direction.x != 0:
             self.status = "run"
@@ -184,6 +190,29 @@ class Player(pygame.sprite.Sprite):
                     elif self.direction.y < 0:
                         self.hitbox.top = sprite.rect.bottom
 
+    # -------------------------------------- Enemies Collisions --------------------------------------
+    def enemyCollision(self):
+        for sprite in self.enemies.sprites():
+            if self.hitbox.colliderect(sprite.hitbox):
+                sprite.attack(self.hitbox.centerx)
+                self.timers["MoveAfterHit_kd"].activate()
+                if sprite.hitbox.x > self.hitbox.x:
+                    self.direction.x = -self.game.scale / self.data["HitBounceX"]
+                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
+                else:
+                    self.direction.x = self.game.scale / self.data["HitBounceX"]
+                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
+
+
+
+    def checkHitEnemy(self):
+        for sprite in self.enemies.sprites():
+            if self.attack_rect.colliderect(sprite.hitbox):
+                if not sprite.timers["MoveAfterHit_kd"].active:
+                    sprite.attack_from_player(self.hitbox.centerx, 100)
+
+
+
 
     # -------------------------------------- User Input - Attacks --------------------------------------
     def attack(self):
@@ -195,9 +224,11 @@ class Player(pygame.sprite.Sprite):
 
             if self.weapon != "bow":
                 if self.facing == "right":
-                    self.attack_rect = pygame.Rect((self.hitbox.right, self.hitbox.centery), (self.game.scale, self.game.scale))
+                    self.attack_rect = pygame.Rect((self.hitbox.right, self.hitbox.centery),
+                                                   (self.game.scale * (10 if self.weapon == "sword" else 5), self.game.scale * 3))
                 if self.facing == "left":
-                    self.attack_rect = pygame.Rect((self.hitbox.left + self.game.scale, self.hitbox.centery), (self.game.scale, self.game.scale))
+                    self.attack_rect = pygame.Rect((self.hitbox.left - self.game.scale * 5, self.hitbox.centery),
+                                                   (self.game.scale * (10 if self.weapon == "sword" else 5), self.game.scale * 3))
 
     # -------------------------------------- Animations --------------------------------------
     def animate(self):
@@ -209,7 +240,7 @@ class Player(pygame.sprite.Sprite):
             self.status = "idle"
             self.switch_stasuses()
 
-        if self.animation_index >= len(self.animation):
+        elif self.animation_index >= len(self.animation):
             self.animation_index = 0
 
         if self.facing == "right":
@@ -227,16 +258,20 @@ class Player(pygame.sprite.Sprite):
         for timer in self.timers.values():
             timer.update()
 
+        self.event_loop(events)
+
         if self.attack_rect is not None:
             if self.facing == "right":
                 self.attack_rect = pygame.Rect((self.hitbox.right, self.hitbox.centery),
-                                               (self.game.scale * 5, self.game.scale * 3))
+                                               (self.game.scale * (10 if self.weapon == "sword" else 5), self.game.scale * 3))
             if self.facing == "left":
-                self.attack_rect = pygame.Rect((self.hitbox.left - self.game.scale * 5, self.hitbox.centery),
-                                               (self.game.scale * 5, self.game.scale * 3))
+                self.attack_rect = pygame.Rect((self.hitbox.left - self.game.scale * (10 if self.weapon == "sword" else 5), self.hitbox.centery),
+                                               (self.game.scale * (10 if self.weapon == "sword" else 5), self.game.scale * 3))
 
+            self.checkHitEnemy()
 
-        self.event_loop(events)
+        self.enemyCollision()
+
         self.gravity()
         self.animate()
         self.move(self.speed)

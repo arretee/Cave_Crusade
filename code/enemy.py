@@ -25,6 +25,9 @@ class Enemy(pygame.sprite.Sprite):
         self.animation = self.animations["run"]
 
         # Movement
+        self.timers = {
+            "MoveAfterHit_kd": Timer(self.data["MoveAfterHit_kd"], self.stop_baunce),
+        }
         self.direction = pygame.math.Vector2(1, 0)
         self.facing = "right"
 
@@ -60,11 +63,14 @@ class Enemy(pygame.sprite.Sprite):
             for sprite in self.obstacle_sprites.sprites() + self.enemies_command_sprites.sprites():
                 if sprite.rect.colliderect(self.hitbox):
                     if self.direction.x > 0:
+                        self.hitbox.right = sprite.rect.left
                         self.direction.x = -1
                         self.facing = "left"
                     elif self.direction.x < 0:
                         self.direction.x = 1
                         self.facing = "right"
+                        self.hitbox.left = sprite.rect.right
+
 
 
         if direction == 'vertical':
@@ -82,7 +88,6 @@ class Enemy(pygame.sprite.Sprite):
         self.y_change = 0
         self.x_change = 0
 
-
         # Get Change of X and Y for image
         if self.data[self.status]:
             self.x_change = self.game.scale * self.data["x_" + self.status]
@@ -91,9 +96,36 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.animations[self.status][0]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
-
         self.animation = self.animations[self.status]
         self.animation_index = 0
+
+    # -------------------------------------- Attack --------------------------------------
+    def attack(self, player_x):
+        if player_x > self.hitbox.centerx:
+            self.facing = "right"
+        else:
+            self.facing = "left"
+
+        self.direction.x = 0
+        self.status = "attack"
+        self.switch_stasuses()
+
+    def attack_from_player(self, player_x, damage):
+        self.timers["MoveAfterHit_kd"].activate()
+        if player_x > self.hitbox.x:
+            self.direction.x = -self.game.scale / self.data["HitBounceX"]
+            self.direction.y = -self.game.scale / self.data["HitBounceY"]
+            self.facing = "right"
+        else:
+            self.direction.x = self.game.scale / self.data["HitBounceX"]
+            self.direction.y = -self.game.scale / self.data["HitBounceY"]
+            self.facing = "left"
+
+    def stop_baunce(self):
+        if self.facing == "right":
+            self.direction.x = 1
+        else:
+            self.direction.x = -1
 
     # -------------------------------------- Animations --------------------------------------
     def import_animations(self):
@@ -111,8 +143,16 @@ class Enemy(pygame.sprite.Sprite):
     def animate(self):
         self.animation_index += self.animation_speed
 
-        if self.animation_index >= len(self.animation):
-            self.attack_rect = None
+        if self.animation_index >= len(self.animation) and self.status == "attack":
+            self.animation_index = 0
+            self.status = "run"
+            self.switch_stasuses()
+            if self.facing == "left":
+                self.direction.x = -1
+            else:
+                self.direction.x = 1
+
+        elif self.animation_index >= len(self.animation):
             self.animation_index = 0
 
         if self.animation_index >= len(self.animation):
@@ -129,6 +169,9 @@ class Enemy(pygame.sprite.Sprite):
 
     # -------------------------------------- Update and Draw --------------------------------------
     def update(self):
+        for timer in self.timers.values():
+            timer.update()
+
         self.gravity()
         self.move()
         self.animate()

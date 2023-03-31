@@ -49,15 +49,6 @@ class Level:
                  groups=[self.enemies_command_sprites]
                  )
 
-
-
-        # Player
-        self.player = Player(
-            game=self.game,
-            pos=(400, 0),
-            obstacle_sprites=self.obstacle_sprites
-        )
-
         # Enemy
         Enemy(
             game=self.game,
@@ -69,6 +60,16 @@ class Level:
             group=self.enemies
 
         )
+
+        # Player
+        self.player = Player(
+            game=self.game,
+            enemies=self.enemies,
+            pos=(400, 0),
+            obstacle_sprites=self.obstacle_sprites
+        )
+
+
 
     # Update = Event loop
     def event_loop(self, events):
