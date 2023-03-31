@@ -122,6 +122,9 @@ class Player(pygame.sprite.Sprite):
             if not self.weapon == "basic":
                 self.attack()
 
+        if self.status == "attack" and self.weapon == "bow":
+            self.direction.x = 0
+
     def gravity(self):
         self.direction.y += self.gravity_speed
 

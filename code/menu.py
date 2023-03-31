@@ -1,7 +1,7 @@
 import pygame
 from pytmx import load_pygame
 
-from settings import pathes
+from settings import *
 from support_functions import import_folder
 from classes import Tile, Button, Menu_Player
 
@@ -21,7 +21,6 @@ class Menu:
             "ButtonText": '#bf8f30',
             "ButtonBorder": '#241A2A',
         }
-
         # Groups
         self.tiles = pygame.sprite.Group()
         self.entity = pygame.sprite.Group()
@@ -117,7 +116,7 @@ class Menu:
 
     def update(self):
         self.buttons.update(pygame.mouse.get_pos())
-        self.entity.update(self.game.dt)
+        self.entity.update()
 
     def run(self):
         self.update()
@@ -130,8 +129,6 @@ class Menu:
         self.tiles.draw(self.screen)
         self.entity.draw(self.screen)
         self.buttons.draw(self.screen)
-
-
 
     # ----------------------------------------------------- Buttons Functions -----------------------------------------------------
     def level_select(self):

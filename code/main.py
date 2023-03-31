@@ -48,7 +48,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.dt = self.clock.tick(120)
+            self.clock.tick(120)
             match self.window:
                 case "menu":
                     self.menu.run()

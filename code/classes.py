@@ -70,14 +70,14 @@ class Menu_Player(pygame.sprite.Sprite):
         super().__init__(group)
 
         self.frame_index = 0
-        self.animation_speed = 6
+        self.animation_speed = 0.06
 
         self.surfaces = surfaces
         self.image = surfaces[0]
         self.rect = self.image.get_rect(bottomright=pos)
 
-    def update(self, dt):
-        self.frame_index += self.animation_speed * dt
+    def update(self):
+        self.frame_index += self.animation_speed
 
         if self.frame_index > len(self.surfaces):
             self.frame_index = 0
