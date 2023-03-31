@@ -2,7 +2,8 @@ import pygame
 
 from classes import Tile
 from player import Player
-from settings import pathes
+from enemy import Enemy
+from settings import *
 
 
 class Level:
@@ -14,6 +15,8 @@ class Level:
         # Groups
         self.visible_sprites = pygame.sprite.Group()
         self.obstacle_sprites = pygame.sprite.Group()
+        self.enemies_command_sprites = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
         self.player = None
 
         # setup
@@ -36,6 +39,18 @@ class Level:
                  groups=[self.visible_sprites, self.obstacle_sprites]
                  )
 
+        image.fill("red")
+        for i in range(0, 32, 31):
+            y = self.game.tile_size * 14
+            x = self.game.tile_size * i
+            Tile(image=image,
+                 size=self.game.tile_size,
+                 pos=(x, y),
+                 groups=[self.enemies_command_sprites]
+                 )
+
+
+
         # Player
         self.player = Player(
             game=self.game,
@@ -43,8 +58,22 @@ class Level:
             obstacle_sprites=self.obstacle_sprites
         )
 
+        # Enemy
+        Enemy(
+            game=self.game,
+            enemy_type="knight_blue",
+            pos=(800, 200),
+            data=characters_data["blue_knigt"],
+            obstacle_sprites=self.obstacle_sprites,
+            enemies_command_sprites=self.enemies_command_sprites,
+            group=self.enemies
+
+        )
+
+    # Update = Event loop
     def event_loop(self, events):
         self.player.update(events)
+        self.enemies.update()
 
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -54,7 +83,11 @@ class Level:
     def run(self):
         self.screen.fill('#281d2f')
         self.visible_sprites.draw(self.screen)
+        self.enemies.draw(self.screen)
         self.player.draw()
 
         if self.debug_status:
             pygame.draw.rect(self.screen, "red", self.player.hitbox)
+            self.enemies_command_sprites.draw(self.screen)
+            for sprite in self.enemies.sprites():
+                pygame.draw.rect(self.screen, "red", sprite.hitbox)

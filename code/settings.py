@@ -103,4 +103,26 @@ characters_data = {
         "x_inflate": -8,
         "y_inflate": -6,
     },
+
+    "blue_knigt": {
+        # basic parms - game scale / value
+        "speed": 4,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -8,
+        "y_inflate": -6,
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -2,
+        "run": True,
+        "x_run": 0,
+        "y_run": -2,
+    },
 }
