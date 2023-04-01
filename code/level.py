@@ -40,27 +40,6 @@ class Level:
                  groups=[self.visible_sprites, self.obstacle_sprites]
                  )
 
-        image.fill("red")
-        for i in range(0, 32, 31):
-            y = self.game.tile_size * 14
-            x = self.game.tile_size * i
-            Tile(image=image,
-                 size=self.game.tile_size,
-                 pos=(x, y),
-                 groups=[self.enemies_command_sprites]
-                 )
-
-        # Enemy
-        Enemy(
-            game=self.game,
-            enemy_type="knight_blue",
-            pos=(800, 200),
-            data=characters_data["blue_knigt"],
-            obstacle_sprites=self.obstacle_sprites,
-            enemies_command_sprites=self.enemies_command_sprites,
-            group=self.enemies
-        )
-
         # Player
         self.player = Player(
             game=self.game,
@@ -68,7 +47,6 @@ class Level:
             pos=(400, 0),
             obstacle_sprites=self.obstacle_sprites
         )
-
 
     # Update = Event loop
     def event_loop(self, events):

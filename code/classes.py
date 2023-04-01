@@ -85,7 +85,7 @@ class Menu_Player(pygame.sprite.Sprite):
         self.image = self.surfaces[int(self.frame_index)]
 
 
-# --------------------------------------- Menu Section ---------------------------------------
+# --------------------------------------- Level Section ---------------------------------------
 class Timer:
     def __init__(self, duration, func=None):
         self.duration = duration
