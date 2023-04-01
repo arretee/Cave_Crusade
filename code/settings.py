@@ -88,6 +88,13 @@ pathes = {
 
 characters_data = {
     "player": {
+        # Health / Attack params
+        "health": 100,
+        "axe_damage": 50,
+        "sword_damage": 35,
+        "bow_damage": 75,
+
+
         # basic parms - game scale / value
         "speed" : 2,
         "gravity_speed": 75,
@@ -110,7 +117,12 @@ characters_data = {
         "MoveAfterHit_kd": 500,
     },
 
+    # -------------------------------------------- Easy Enemies --------------------------------------------
     "blue_knigt": {
+        "health": 50,
+        "damage": 15,
+
+
         # basic parms - game scale / value
         "speed": 4,
         "gravity_speed": 75,
@@ -140,4 +152,7 @@ characters_data = {
         "x_attack": 0,
         "y_attack": -4,
     },
+    # -------------------------------------------- Normal Enemies --------------------------------------------
+    # -------------------------------------------- Hard Enemies --------------------------------------------
+
 }

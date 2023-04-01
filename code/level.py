@@ -1,5 +1,6 @@
 import pygame
 
+from support_functions import debug
 from classes import Tile
 from player import Player
 from enemy import Enemy
@@ -58,7 +59,6 @@ class Level:
             obstacle_sprites=self.obstacle_sprites,
             enemies_command_sprites=self.enemies_command_sprites,
             group=self.enemies
-
         )
 
         # Player
@@ -68,7 +68,6 @@ class Level:
             pos=(400, 0),
             obstacle_sprites=self.obstacle_sprites
         )
-
 
 
     # Update = Event loop
@@ -90,5 +89,9 @@ class Level:
         if self.debug_status:
             pygame.draw.rect(self.screen, "red", self.player.hitbox)
             self.enemies_command_sprites.draw(self.screen)
+            debug(self.player.health)
+            for index, sprite in enumerate(self.enemies.sprites()):
+                debug(sprite.health, index*50 + 50, 10)
+
             for sprite in self.enemies.sprites():
                 pygame.draw.rect(self.screen, "red", sprite.hitbox)

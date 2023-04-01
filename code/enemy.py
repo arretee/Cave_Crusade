@@ -25,6 +25,8 @@ class Enemy(pygame.sprite.Sprite):
         self.animation = self.animations["run"]
 
         # Movement
+        self.health = self.data["health"]
+
         self.timers = {
             "MoveAfterHit_kd": Timer(self.data["MoveAfterHit_kd"], self.stop_baunce),
         }
@@ -112,6 +114,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def attack_from_player(self, player_x, damage):
         self.timers["MoveAfterHit_kd"].activate()
+        self.health -= damage
         if player_x > self.hitbox.x:
             self.direction.x = -self.game.scale / self.data["HitBounceX"]
             self.direction.y = -self.game.scale / self.data["HitBounceY"]
@@ -169,6 +172,9 @@ class Enemy(pygame.sprite.Sprite):
 
     # -------------------------------------- Update and Draw --------------------------------------
     def update(self):
+        if self.health <= 0:
+            self.kill()
+
         for timer in self.timers.values():
             timer.update()
 

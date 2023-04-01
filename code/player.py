@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.obstacle_sprites = obstacle_sprites
 
         # Statuses
+        self.health = self.data["health"]
+        self.max_health = self.data["health"]
         self.direction = pygame.math.Vector2()
 
         self.speed = self.game.scale / self.data["speed"]
@@ -196,6 +198,7 @@ class Player(pygame.sprite.Sprite):
             if self.hitbox.colliderect(sprite.hitbox):
                 sprite.attack(self.hitbox.centerx)
                 self.timers["MoveAfterHit_kd"].activate()
+                self.health -= sprite.data["damage"]
                 if sprite.hitbox.x > self.hitbox.x:
                     self.direction.x = -self.game.scale / self.data["HitBounceX"]
                     self.direction.y = -self.game.scale / self.data["HitBounceY"]
@@ -203,15 +206,11 @@ class Player(pygame.sprite.Sprite):
                     self.direction.x = self.game.scale / self.data["HitBounceX"]
                     self.direction.y = -self.game.scale / self.data["HitBounceY"]
 
-
-
     def checkHitEnemy(self):
         for sprite in self.enemies.sprites():
             if self.attack_rect.colliderect(sprite.hitbox):
                 if not sprite.timers["MoveAfterHit_kd"].active:
-                    sprite.attack_from_player(self.hitbox.centerx, 100)
-
-
+                    sprite.attack_from_player(player_x=self.hitbox.centerx, damage=self.data[f"{self.weapon}_damage"])
 
 
     # -------------------------------------- User Input - Attacks --------------------------------------
