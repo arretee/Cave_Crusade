@@ -111,5 +111,19 @@ class Timer:
             self.deactivate()
 
 
+class Level_Tile(pygame.sprite.Sprite):
+    def __init__(self, image, size, pos, groups):
+        super().__init__(groups)
+
+        self.pos = pos
+
+        self.image = pygame.transform.scale(image, (size, size)).convert_alpha()
+        self.rect = self.image.get_rect(topleft=self.pos)
+
+    def update(self, x_shift, ):
+        self.rect.x = self.pos[0] + x_shift
+
+
+
 
 

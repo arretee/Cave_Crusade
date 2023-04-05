@@ -1,7 +1,8 @@
 import pygame
+from pytmx import load_pygame
 
 from support_functions import debug
-from classes import Tile
+from classes import Level_Tile
 from player import Player
 from enemy import Enemy
 from settings import *
@@ -20,6 +21,10 @@ class Level:
         self.enemies = pygame.sprite.Group()
         self.player = None
 
+        # Draw
+        self.x_offset = 0
+        self.y_offset = 0
+
         # setup
         self.setup()
 
@@ -27,30 +32,95 @@ class Level:
         self.debug_status = False
 
     def setup(self):
-        # Ground
-        image = pygame.Surface((self.game.tile_size, self.game.tile_size))
-        image.fill("gray30")
+        # -------------------------------- DATA --------------------------------
+        tmxdata = load_pygame("../map/levels/level_test1.tmx")
+        self.map_width = tmxdata.width
+        self.map_height = tmxdata.height
 
-        for i in range(32):
-            y = self.game.tile_size * 15
-            x = self.game.tile_size * i
-            Tile(image=image,
-                 size=self.game.tile_size,
-                 pos=(x, y),
-                 groups=[self.visible_sprites, self.obstacle_sprites]
-                 )
+        layer_main = tmxdata.get_layer_by_name('main')
+        layer_door_entrance = tmxdata.get_layer_by_name('door_start')
+        layer_door_exit = tmxdata.get_layer_by_name('door_exit')
+        layer_decor = tmxdata.get_layer_by_name('decor')
+        layer_enemy_blocks = tmxdata.get_layer_by_name('enemy_blocks')
+
+        # -------------------------------- OFFSETS AND PLAYER --------------------------------
+        for x, y, surf in layer_door_entrance.tiles():
+            self.x_offset = -x * self.game.tile_size + self.game.screen_width / 2
+            player_pos = [self.game.screen_width / 2, y * self.game.tile_size]
+            break
+
+        self.min_offsets = [-self.map_width * self.game.tile_size + self.game.screen_width, 0]
+        self.max_offsets = [0, 0]
+
+        # X offset
+        if self.x_offset > self.max_offsets[0]:
+            player_pos[0] = player_pos[0] - self.x_offset
+            self.x_offset = self.max_offsets[0]
+        elif self.x_offset < self.min_offsets[0]:
+            player_pos[0] = player_pos[0] - (self.x_offset - (self.min_offsets[0]))
+            self.x_offset = self.min_offsets[0]
+
 
         # Player
         self.player = Player(
             game=self.game,
+            pos=player_pos,
             enemies=self.enemies,
-            pos=(400, 0),
             obstacle_sprites=self.obstacle_sprites
         )
 
+        # -------------------------------- TILES --------------------------------
+        # Basic Tiles
+        for x, y, surf in layer_main.tiles():
+            Level_Tile(
+                image=surf,
+                size=self.game.tile_size,
+                pos=(x * self.game.tile_size, y * self.game.tile_size),
+                groups=[self.visible_sprites, self.obstacle_sprites]
+            )
+
+        # Decor
+        for x, y, surf in layer_decor.tiles():
+            Level_Tile(
+                image=surf,
+                size=self.game.tile_size,
+                pos=(x * self.game.tile_size, y * self.game.tile_size),
+                groups=[self.visible_sprites]
+            )
+
+
+        # First update
+        # self.update_offsets()
+        self.obstacle_sprites.update(self.x_offset)
+        self.visible_sprites.update(self.x_offset)
+        self.enemies_command_sprites.update(self.x_offset)
+
     # Update = Event loop
+    def update_offsets(self):
+        # Update
+        # X offset
+        if self.player.hitbox.centerx <= self.game.tile_size * 10 and self.x_offset < self.max_offsets[0] and self.player.direction.x != 0:
+            self.x_offset += self.player.speed
+            self.player.hitbox.centerx = self.game.tile_size * 10
+        elif self.player.hitbox.centerx >= self.game.screen_width - self.game.tile_size * 10 and self.x_offset > self.min_offsets[0] and self.player.direction.x != 0:
+            self.x_offset -= self.player.speed
+            self.player.hitbox.centerx = self.game.screen_width - self.game.tile_size * 10
+
+
+        # X offset - Max And Min
+        if self.x_offset > self.max_offsets[0]:
+            self.x_offset = self.max_offsets[0]
+        elif self.x_offset < self.min_offsets[0]:
+            self.x_offset = self.min_offsets[0]
+
     def event_loop(self, events):
+
         self.player.update(events)
+        self.update_offsets()
+
+        self.obstacle_sprites.update(self.x_offset)
+        self.visible_sprites.update(self.x_offset)
+        self.enemies_command_sprites.update(self.x_offset)
         self.enemies.update()
 
         for event in events:
@@ -67,9 +137,10 @@ class Level:
         if self.debug_status:
             pygame.draw.rect(self.screen, "red", self.player.hitbox)
             self.enemies_command_sprites.draw(self.screen)
-            debug(self.player.health)
+            debug(self.player.direction)
+
             for index, sprite in enumerate(self.enemies.sprites()):
-                debug(sprite.health, index*50 + 50, 10)
+                debug(sprite.health, index * 50 + 50, 10)
 
             for sprite in self.enemies.sprites():
                 pygame.draw.rect(self.screen, "red", sprite.hitbox)

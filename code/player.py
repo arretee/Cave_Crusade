@@ -177,9 +177,10 @@ class Player(pygame.sprite.Sprite):
                 if sprite.rect.colliderect(self.hitbox):
                     if self.direction.x > 0:
                         self.hitbox.right = sprite.rect.left
+                        self.direction.x = 0
                     elif self.direction.x < 0:
                         self.hitbox.left = sprite.rect.right
-
+                        self.direction.x = 0
 
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
@@ -190,6 +191,7 @@ class Player(pygame.sprite.Sprite):
                         self.onGround = True
 
                     elif self.direction.y < 0:
+                        self.direction.y = 0
                         self.hitbox.top = sprite.rect.bottom
 
     # -------------------------------------- Enemies Collisions --------------------------------------
@@ -259,6 +261,7 @@ class Player(pygame.sprite.Sprite):
 
         self.event_loop(events)
 
+
         if self.attack_rect is not None:
             if self.facing == "right":
                 self.attack_rect = pygame.Rect((self.hitbox.right, self.hitbox.centery),
@@ -270,9 +273,8 @@ class Player(pygame.sprite.Sprite):
             self.checkHitEnemy()
 
         self.enemyCollision()
-
-        self.gravity()
         self.animate()
+        self.gravity()
         self.move(self.speed)
 
     def draw(self):
