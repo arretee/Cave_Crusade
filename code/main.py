@@ -2,6 +2,7 @@ import pygame
 import sys
 
 from menu import Menu
+from levels_settings import *
 from level import Level
 from settings import *
 
@@ -14,7 +15,7 @@ class Game:
         self.screen_height = pygame.display.Info().current_h
 
         # self.screen_width, self.screen_height = 1920, 1080
-        self.screen_width, self.screen_height = 1600, 900
+        # self.screen_width, self.screen_height = 1600, 900
         # self.screen_width, self.screen_height = 1280, 720
 
 
@@ -60,7 +61,7 @@ class Game:
             pygame.display.update()
 
     def create_level(self):
-        self.level = Level(self)
+        self.level = Level(self, test_level)
         self.window = "level"
 
     def stop(self):

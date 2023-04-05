@@ -2,23 +2,26 @@ import pygame
 from pytmx import load_pygame
 
 from support_functions import debug
-from classes import Level_Tile
+from classes import Level_Tile, Spike
 from player import Player
 from enemy import Enemy
 from settings import *
 
 
 class Level:
-    def __init__(self, game):
+    def __init__(self, game, data):
         self.game = game
 
         self.screen = self.game.screen
+
+        self.level_data = data
 
         # Groups
         self.visible_sprites = pygame.sprite.Group()
         self.obstacle_sprites = pygame.sprite.Group()
         self.enemies_command_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        self.spikes = pygame.sprite.Group()
         self.player = None
 
         # Draw
@@ -33,18 +36,14 @@ class Level:
 
     def setup(self):
         # -------------------------------- DATA --------------------------------
-        tmxdata = load_pygame("../map/levels/level_test1.tmx")
+        tmxdata = load_pygame(self.level_data["tmx_path"])
         self.map_width = tmxdata.width
         self.map_height = tmxdata.height
 
-        layer_main = tmxdata.get_layer_by_name('main')
-        layer_door_entrance = tmxdata.get_layer_by_name('door_start')
-        layer_door_exit = tmxdata.get_layer_by_name('door_exit')
-        layer_decor = tmxdata.get_layer_by_name('decor')
-        layer_enemy_blocks = tmxdata.get_layer_by_name('enemy_blocks')
 
-        # -------------------------------- OFFSETS AND PLAYER --------------------------------
-        for x, y, surf in layer_door_entrance.tiles():
+        # -------------------------------- OFFSET AND PLAYER --------------------------------
+        layer_door_start = tmxdata.get_layer_by_name('door_start')
+        for x, y, surf in layer_door_start.tiles():
             self.x_offset = -x * self.game.tile_size + self.game.screen_width / 2
             player_pos = [self.game.screen_width / 2, y * self.game.tile_size]
             break
@@ -70,7 +69,8 @@ class Level:
         )
 
         # -------------------------------- TILES --------------------------------
-        # Basic Tiles
+        # -------------- Basic Tiles --------------
+        layer_main = tmxdata.get_layer_by_name('main')
         for x, y, surf in layer_main.tiles():
             Level_Tile(
                 image=surf,
@@ -79,7 +79,8 @@ class Level:
                 groups=[self.visible_sprites, self.obstacle_sprites]
             )
 
-        # Decor
+        # -------------- Decor --------------
+        layer_decor = tmxdata.get_layer_by_name('decor')
         for x, y, surf in layer_decor.tiles():
             Level_Tile(
                 image=surf,
@@ -87,6 +88,101 @@ class Level:
                 pos=(x * self.game.tile_size, y * self.game.tile_size),
                 groups=[self.visible_sprites]
             )
+
+        # -------------- Doors --------------
+        layer_door_start = tmxdata.get_layer_by_name('door_start')
+        layer_door_exit = tmxdata.get_layer_by_name('door_exit')
+
+        for x, y, surf in layer_door_start.tiles():
+            Level_Tile(
+                image=surf,
+                size=self.game.tile_size,
+                pos=(x * self.game.tile_size, y * self.game.tile_size),
+                groups=[self.visible_sprites]
+            )
+
+        for x, y, surf in layer_door_exit.tiles():
+            Level_Tile(
+                image=surf,
+                size=self.game.tile_size,
+                pos=(x * self.game.tile_size, y * self.game.tile_size),
+                groups=[self.visible_sprites]
+            )
+
+        # -------------- EnemyBlocks --------------
+        layer_enemy_blocks = tmxdata.get_layer_by_name('enemy_blocks')
+        for x, y, surf in layer_enemy_blocks.tiles():
+            Level_Tile(
+                image=surf,
+                size=self.game.tile_size,
+                pos=(x * self.game.tile_size, y * self.game.tile_size),
+                groups=[self.enemies_command_sprites]
+            )
+        # -------------- Enemies --------------
+        for enemy in self.level_data["enemies"].values():
+            Enemy(
+                game=self.game,
+                enemy_type=enemy[1],
+                pos=(enemy[0][0] * self.game.tile_size, enemy[0][1] * self.game.tile_size),
+                data=characters_data[enemy[1]],
+                obstacle_sprites=self.obstacle_sprites,
+                enemies_command_sprites=self.enemies_command_sprites,
+                group=self.enemies
+            )
+
+
+        # -------------- Spikes --------------
+        layer_spikes_right = tmxdata.get_layer_by_name("spikes_right")
+        layer_spikes_left = tmxdata.get_layer_by_name("spikes_left")
+        layer_spikes_bottom = tmxdata.get_layer_by_name("spikes_bottom")
+        layer_spikes_top = tmxdata.get_layer_by_name("spikes_top")
+
+        # right
+        for x, y, surf in layer_spikes_right.tiles():
+            Spike(
+                image=surf,
+                size=self.game.tile_size,
+                hitbox_size=(self.game.tile_size * 0.4, self.game.tile_size),
+                pos=(self.game.tile_size * x, self.game.tile_size * y),
+                groups=[self.spikes, self.visible_sprites],
+                status="right"
+            )
+        # left
+        for x, y, surf in layer_spikes_left.tiles():
+            Spike(
+                image=surf,
+                size=self.game.tile_size,
+                hitbox_size=(self.game.tile_size * 0.4, self.game.tile_size),
+                pos=(self.game.tile_size * x, self.game.tile_size * y),
+                groups=[self.spikes, self.visible_sprites],
+                status="left"
+            )
+
+        # bottom
+        for x, y, surf in layer_spikes_bottom.tiles():
+            Spike(
+                image=surf,
+                size=self.game.tile_size,
+                hitbox_size=(self.game.tile_size, self.game.tile_size * 0.4),
+                pos=(self.game.tile_size * x, self.game.tile_size * y),
+                groups=[self.spikes, self.visible_sprites],
+                status="bottom"
+            )
+        # top
+        for x, y, surf in layer_spikes_top.tiles():
+            Spike(
+                image=surf,
+                size=self.game.tile_size,
+                hitbox_size=(self.game.tile_size, self.game.tile_size * 0.4),
+                pos=(self.game.tile_size * x, self.game.tile_size * y),
+                groups=[self.spikes, self.visible_sprites],
+                status="top"
+            )
+
+        # -------------- Keys --------------
+        layer_keys = tmxdata.get_layer_by_name("keys_door")
+        # -------------- Coins --------------
+        layer_coins = tmxdata.get_layer_by_name("coins")
 
 
         # First update
@@ -121,7 +217,7 @@ class Level:
         self.obstacle_sprites.update(self.x_offset)
         self.visible_sprites.update(self.x_offset)
         self.enemies_command_sprites.update(self.x_offset)
-        self.enemies.update()
+        self.enemies.update(self.x_offset)
 
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -135,12 +231,14 @@ class Level:
         self.player.draw()
 
         if self.debug_status:
+            print("Mouse pos in Tiles = [X = ", (-self.x_offset + pygame.mouse.get_pos()[0]) // self.game.tile_size, " , Y = ", pygame.mouse.get_pos()[1] // self.game.tile_size, "]")
+
             pygame.draw.rect(self.screen, "red", self.player.hitbox)
             self.enemies_command_sprites.draw(self.screen)
             debug(self.player.direction)
 
-            for index, sprite in enumerate(self.enemies.sprites()):
-                debug(sprite.health, index * 50 + 50, 10)
-
             for sprite in self.enemies.sprites():
                 pygame.draw.rect(self.screen, "red", sprite.hitbox)
+
+            for sprite in self.spikes.sprites():
+                pygame.draw.rect(self.screen, "blue", sprite.hitbox)

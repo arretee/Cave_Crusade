@@ -124,6 +124,26 @@ class Level_Tile(pygame.sprite.Sprite):
         self.rect.x = self.pos[0] + x_shift
 
 
+class Spike(pygame.sprite.Sprite):
+    def __init__(self, image, size, hitbox_size, pos, groups, status):
+        super().__init__(groups)
 
+        self.pos = pos
+
+        self.image = pygame.transform.scale(image, (size, size)).convert_alpha()
+        self.rect = self.image.get_rect(topleft=self.pos)
+        if status == "left":
+            self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=self.rect.topleft)
+        elif status == "right":
+            self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=(self.rect.right - hitbox_size[0], self.rect.top))
+        elif status == "top":
+            self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=self.rect.topleft)
+        elif status == "bottom":
+            self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=(self.rect.left, self.rect.bottom - hitbox_size[1]))
+        self.hitbox_pos = self.hitbox.topleft
+
+    def update(self, x_shift):
+        self.rect.x = self.pos[0] + x_shift
+        self.hitbox.x = self.hitbox_pos[0] + x_shift
 
 

@@ -44,6 +44,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.animation[0]
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * self.data["y_inflate"])
+        self.pos = list(self.hitbox.center)
 
         # Temp
         self.switch_stasuses()
@@ -54,8 +55,10 @@ class Enemy(pygame.sprite.Sprite):
 
     def move(self):
         self.hitbox.x += int(self.direction.x * self.speed)
+        self.pos[0] += int(self.direction.x * self.speed)
         self.collision('horizontal')
         self.hitbox.y += int(self.direction.y)
+        self.pos[1] += int(self.direction.y)
         self.collision('vertical')
 
         self.rect.center = (self.hitbox.centerx + (self.x_change if self.facing == "right" else -self.x_change), self.hitbox.centery + self.y_change)
@@ -171,7 +174,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (self.hitbox.centerx + (self.x_change if self.facing == "right" else -self.x_change), self.hitbox.centery + self.y_change)
 
     # -------------------------------------- Update and Draw --------------------------------------
-    def update(self):
+    def update(self, x_shift):
+        self.hitbox.centerx = self.pos[0] + x_shift
+
         if self.health <= 0:
             self.kill()
 
