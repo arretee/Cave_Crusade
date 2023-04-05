@@ -65,6 +65,7 @@ class Level:
             game=self.game,
             pos=player_pos,
             enemies=self.enemies,
+            spikes=self.spikes,
             obstacle_sprites=self.obstacle_sprites
         )
 

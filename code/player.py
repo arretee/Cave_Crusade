@@ -7,12 +7,13 @@ from classes import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, game, pos, enemies, obstacle_sprites):
+    def __init__(self, game, pos, enemies, spikes, obstacle_sprites):
         super().__init__()
 
         # Main data / Vriabels
         self.data = characters_data["player"]
         self.game = game
+        self.spikes = spikes
         self.enemies = enemies
         self.screen = game.screen
         self.setup()
@@ -201,6 +202,7 @@ class Player(pygame.sprite.Sprite):
                 sprite.attack(self.hitbox.centerx)
                 self.timers["MoveAfterHit_kd"].activate()
                 self.health -= sprite.data["damage"]
+                self.onGround = False
                 if sprite.hitbox.x > self.hitbox.x:
                     self.direction.x = -self.game.scale / self.data["HitBounceX"]
                     self.direction.y = -self.game.scale / self.data["HitBounceY"]
@@ -213,6 +215,20 @@ class Player(pygame.sprite.Sprite):
             if self.attack_rect.colliderect(sprite.hitbox):
                 if not sprite.timers["MoveAfterHit_kd"].active:
                     sprite.attack_from_player(player_x=self.hitbox.centerx, damage=self.data[f"{self.weapon}_damage"])
+
+    def checkSpikeCollision(self):
+        for sprite in self.spikes.sprites():
+            if self.hitbox.colliderect(sprite.hitbox):
+                self.timers["MoveAfterHit_kd"].activate()
+                self.health -= 10
+                self.onGround = False
+                if sprite.hitbox.x > self.hitbox.x:
+                    self.direction.x = -self.game.scale / self.data["HitBounceX"]
+                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
+                else:
+                    self.direction.x = self.game.scale / self.data["HitBounceX"]
+                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
+
 
 
     # -------------------------------------- User Input - Attacks --------------------------------------
@@ -273,6 +289,7 @@ class Player(pygame.sprite.Sprite):
             self.checkHitEnemy()
 
         self.enemyCollision()
+        self.checkSpikeCollision()
         self.animate()
         self.gravity()
         self.move(self.speed)
