@@ -147,3 +147,40 @@ class Spike(pygame.sprite.Sprite):
         self.hitbox.x = self.hitbox_pos[0] + x_shift
 
 
+class Arrow(pygame.sprite.Sprite):
+    def __init__(self, start_pos, direction, speed, obstacle_sprites, groups, tilesize):
+        super().__init__(groups)
+        self.obstacle_sprites = obstacle_sprites
+
+
+        self.pos = start_pos
+        if direction == "left":
+            self.x_direction = -1 * speed
+        else:
+            self.x_direction = speed
+
+        self.image = pygame.image.load("../graphics/items/arrow.png")
+        self.image = pygame.transform.scale(self.image, (tilesize / 1.5, tilesize * 1.5))
+
+        if direction == "right":
+            self.image = pygame.transform.rotate(self.image, 270)
+            self.rect = self.image.get_rect(topleft=start_pos)
+        else:
+            self.image = pygame.transform.rotate(self.image, 90)
+            self.rect = self.image.get_rect(topright=start_pos)
+
+        self.hitbox = self.rect.inflate(-self.rect.width * 0.5, -self.rect.height * 0.5)
+        self.hitbox_x = self.hitbox.left
+
+    def update(self, x_shift):
+        # update rect
+        self.pos[0] = self.pos[0] + self.x_direction
+
+        if self.x_direction < 0:
+            self.rect.right = self.pos[0] + x_shift
+        else:
+            self.rect.left = self.pos[0] + x_shift
+
+        # update hitbox
+        self.hitbox_x += self.x_direction
+        self.hitbox.left = self.hitbox_x + x_shift

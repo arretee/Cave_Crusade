@@ -257,6 +257,15 @@ class Player(pygame.sprite.Sprite):
             self.status = "idle"
             self.switch_stasuses()
 
+        if self.animation_index >= len(self.animation)-2 and self.status == "attack" and self.weapon == "bow" and not self.animation_index - self.animation_speed >= len(self.animation)-2 :
+            if self.facing == "left":
+                self.game.level.create_arrow(self.hitbox.left)
+            else:
+                self.game.level.create_arrow(self.hitbox.right)
+
+
+
+
         elif self.animation_index >= len(self.animation):
             self.animation_index = 0
 

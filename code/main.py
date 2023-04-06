@@ -15,7 +15,7 @@ class Game:
         self.screen_height = pygame.display.Info().current_h
 
         # self.screen_width, self.screen_height = 1920, 1080
-        # self.screen_width, self.screen_height = 1600, 900
+        self.screen_width, self.screen_height = 1600, 900
         # self.screen_width, self.screen_height = 1280, 720
 
 

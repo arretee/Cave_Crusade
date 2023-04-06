@@ -2,7 +2,7 @@ import pygame
 from pytmx import load_pygame
 
 from support_functions import debug
-from classes import Level_Tile, Spike
+from classes import Level_Tile, Spike, Arrow
 from player import Player
 from enemy import Enemy
 from settings import *
@@ -22,6 +22,7 @@ class Level:
         self.enemies_command_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.spikes = pygame.sprite.Group()
+        self.arrows = pygame.sprite.Group()
         self.player = None
 
         # Draw
@@ -33,6 +34,18 @@ class Level:
 
         # Debug
         self.debug_status = False
+
+    # Arrows
+    def create_arrow(self, x):
+        Arrow(
+            start_pos=[x - self.x_offset, self.player.hitbox.centery - self.player.hitbox.height / 5],
+            direction=self.player.facing,
+            speed=2,
+            obstacle_sprites=self.obstacle_sprites,
+            groups=[self.arrows],
+            tilesize=self.game.tile_size
+        )
+
 
     def setup(self):
         # -------------------------------- DATA --------------------------------
@@ -218,6 +231,7 @@ class Level:
         self.obstacle_sprites.update(self.x_offset)
         self.visible_sprites.update(self.x_offset)
         self.enemies_command_sprites.update(self.x_offset)
+        self.arrows.update(self.x_offset)
         self.enemies.update(self.x_offset)
 
         for event in events:
@@ -227,6 +241,7 @@ class Level:
 
     def run(self):
         self.screen.fill('#281d2f')
+        self.arrows.draw(self.screen)
         self.visible_sprites.draw(self.screen)
         self.enemies.draw(self.screen)
         self.player.draw()
@@ -243,3 +258,6 @@ class Level:
 
             for sprite in self.spikes.sprites():
                 pygame.draw.rect(self.screen, "blue", sprite.hitbox)
+
+            for sprite in self.arrows.sprites():
+                pygame.draw.rect(self.screen, "green", sprite.hitbox)
