@@ -46,6 +46,15 @@ class Level:
             tilesize=self.game.tile_size
         )
 
+    def update_arrows(self):
+        self.arrows.update(self.x_offset)
+
+        for enemy in self.enemies.sprites():
+            for arrow in self.arrows.sprites():
+                if enemy.rect.colliderect(arrow):
+                    arrow.kill()
+                    enemy.attack_from_player(self.player.hitbox.centerx, self.player.data["bow_damage"])
+
 
     def setup(self):
         # -------------------------------- DATA --------------------------------
@@ -231,8 +240,13 @@ class Level:
         self.obstacle_sprites.update(self.x_offset)
         self.visible_sprites.update(self.x_offset)
         self.enemies_command_sprites.update(self.x_offset)
-        self.arrows.update(self.x_offset)
+        self.update_arrows()
         self.enemies.update(self.x_offset)
+
+
+        if self.player.health <= 0:
+            self.game.create_level()
+
 
         for event in events:
             if event.type == pygame.KEYDOWN:

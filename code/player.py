@@ -220,7 +220,7 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.spikes.sprites():
             if self.hitbox.colliderect(sprite.hitbox):
                 self.timers["MoveAfterHit_kd"].activate()
-                self.health -= 10
+                self.health -= 50
                 self.onGround = False
                 if sprite.hitbox.x > self.hitbox.x:
                     self.direction.x = -self.game.scale / self.data["HitBounceX"]

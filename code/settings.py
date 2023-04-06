@@ -155,6 +155,71 @@ characters_data = {
     },
 
     # -------------------------------------------- Normal Enemies --------------------------------------------
-    # -------------------------------------------- Hard Enemies --------------------------------------------
+    "knight_yellow": {
+        "health": 200,
+        "damage": 20,
 
+        # basic parms - game scale / value
+        "speed": 4.5,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
+    },
+
+
+    # -------------------------------------------- Hard Enemies --------------------------------------------
+    "knight_red": {
+        "health": 300,
+        "damage": 15,
+
+        # basic parms - game scale / value
+        "speed": 4,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
+    },
 }

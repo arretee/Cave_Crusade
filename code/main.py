@@ -37,6 +37,7 @@ class Game:
 
         # Setup
         self.menu = Menu(self)
+        self.current_level = 1
         self.level = None
 
 
@@ -61,7 +62,7 @@ class Game:
             pygame.display.update()
 
     def create_level(self):
-        self.level = Level(self, test_level)
+        self.level = Level(self, levels[self.current_level])
         self.window = "level"
 
     def stop(self):
