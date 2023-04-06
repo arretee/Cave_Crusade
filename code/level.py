@@ -40,7 +40,7 @@ class Level:
         Arrow(
             start_pos=[x - self.x_offset, self.player.hitbox.centery - self.player.hitbox.height / 5],
             direction=self.player.facing,
-            speed=2,
+            speed=self.game.scale * self.player.data["arrow_speed"],
             obstacle_sprites=self.obstacle_sprites,
             groups=[self.arrows],
             tilesize=self.game.tile_size

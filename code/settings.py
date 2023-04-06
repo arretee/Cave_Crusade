@@ -93,6 +93,7 @@ characters_data = {
         "axe_damage": 50,
         "sword_damage": 35,
         "bow_damage": 75,
+        "arrow_speed": 2,        # game scale * value
 
 
         # basic parms - game scale / value

@@ -173,14 +173,16 @@ class Arrow(pygame.sprite.Sprite):
         self.hitbox_x = self.hitbox.left
 
     def update(self, x_shift):
-        # update rect
-        self.pos[0] = self.pos[0] + self.x_direction
-
-        if self.x_direction < 0:
-            self.rect.right = self.pos[0] + x_shift
-        else:
-            self.rect.left = self.pos[0] + x_shift
-
-        # update hitbox
         self.hitbox_x += self.x_direction
         self.hitbox.left = self.hitbox_x + x_shift
+        self.rect.left = -self.rect.width * 0.25 + self.hitbox.left
+
+        # collision
+        for sprite in self.obstacle_sprites:
+            if sprite.rect.colliderect(self.hitbox):
+                if self.x_direction > 0:
+                    self.hitbox.right = sprite.rect.left
+                    self.x_direction = 0
+                elif self.x_direction < 0:
+                    self.hitbox.left = sprite.rect.right
+                    self.x_direction = 0
