@@ -186,3 +186,23 @@ class Arrow(pygame.sprite.Sprite):
                 elif self.x_direction < 0:
                     self.hitbox.left = sprite.rect.right
                     self.x_direction = 0
+
+
+class Key(pygame.sprite.Sprite):
+    def __init__(self, pos, type, scale, groups):
+        super().__init__(groups)
+
+        self.pos = pos
+        if type == "gold":
+            self.image = pygame.image.load("../graphics/items/key_gold.png")
+        else:
+            self.image = pygame.image.load("../graphics/items/key_silver.png.png")
+
+        self.image = pygame.transform.scale(self.image, (7 * scale / 2, 12 * scale / 2))
+        self.rect = self.image.get_rect(topleft=self.pos)
+
+    def update(self, x_shift):
+        self.rect.x = self.pos[0] + x_shift
+
+
+

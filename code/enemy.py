@@ -6,7 +6,7 @@ from classes import Timer
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, game, enemy_type, pos, data, obstacle_sprites, enemies_command_sprites, group):
+    def __init__(self, game, enemy_type, pos, data, obstacle_sprites, enemies_command_sprites, island_borders, group):
         super().__init__(group)
 
         # General
@@ -15,6 +15,7 @@ class Enemy(pygame.sprite.Sprite):
         self.enemy_type = enemy_type
         self.data = data
         self.obstacle_sprites = obstacle_sprites
+        self.island_borders = island_borders
         self.enemies_command_sprites = enemies_command_sprites
 
         # Animations
@@ -25,6 +26,7 @@ class Enemy(pygame.sprite.Sprite):
         self.animation = self.animations["run"]
 
         # Movement
+        self.hited = False
         self.health = self.data["health"]
 
         self.timers = {
@@ -65,7 +67,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def collision(self, direction):
         if direction == 'horizontal':
-            for sprite in self.obstacle_sprites.sprites() + self.enemies_command_sprites.sprites():
+            for sprite in self.obstacle_sprites.sprites() + self.island_borders.sprites():
                 if sprite.rect.colliderect(self.hitbox):
                     if self.direction.x > 0:
                         self.hitbox.right = sprite.rect.left
@@ -75,6 +77,18 @@ class Enemy(pygame.sprite.Sprite):
                         self.direction.x = 1
                         self.facing = "right"
                         self.hitbox.left = sprite.rect.right
+
+            if not self.hited:
+                for sprite in self.enemies_command_sprites.sprites():
+                    if sprite.rect.colliderect(self.hitbox):
+                        if self.direction.x > 0:
+                            self.hitbox.right = sprite.rect.left
+                            self.direction.x = -1
+                            self.facing = "left"
+                        elif self.direction.x < 0:
+                            self.direction.x = 1
+                            self.facing = "right"
+                            self.hitbox.left = sprite.rect.right
 
 
 
@@ -118,6 +132,7 @@ class Enemy(pygame.sprite.Sprite):
     def attack_from_player(self, player_x, damage):
         self.timers["MoveAfterHit_kd"].activate()
         self.health -= damage
+        self.hited = True
         if player_x > self.hitbox.x:
             self.direction.x = -self.game.scale / self.data["HitBounceX"]
             self.direction.y = -self.game.scale / self.data["HitBounceY"]
@@ -126,6 +141,19 @@ class Enemy(pygame.sprite.Sprite):
             self.direction.x = self.game.scale / self.data["HitBounceX"]
             self.direction.y = -self.game.scale / self.data["HitBounceY"]
             self.facing = "left"
+
+    def checkSpikeCollision(self):
+        for sprite in self.game.level.spikes.sprites():
+            if self.hitbox.colliderect(sprite.hitbox):
+                self.timers["MoveAfterHit_kd"].activate()
+                self.health -= 100
+                self.onGround = False
+                if sprite.hitbox.x > self.hitbox.x:
+                    self.direction.x = -self.game.scale / self.data["HitBounceX"]
+                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
+                else:
+                    self.direction.x = self.game.scale / self.data["HitBounceX"]
+                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
 
     def stop_baunce(self):
         if self.facing == "right":
@@ -183,6 +211,7 @@ class Enemy(pygame.sprite.Sprite):
         for timer in self.timers.values():
             timer.update()
 
+        self.checkSpikeCollision()
         self.gravity()
         self.move()
         self.animate()

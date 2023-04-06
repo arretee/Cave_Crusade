@@ -90,7 +90,7 @@ characters_data = {
     "player": {
         # Health / Attack params
         "health": 100,
-        "axe_damage": 50,
+        "axe_damage": 55,
         "sword_damage": 35,
         "bow_damage": 75,
         "arrow_speed": 2,        # game scale * value
@@ -101,7 +101,7 @@ characters_data = {
         "gravity_speed": 75,
         "jump_speed": -1,
         "sword_kd": 2000,
-        "axe_kd": 1000,
+        "axe_kd": 2000,
         "bow_kd": 4000,
 
         # animation value
@@ -154,6 +154,72 @@ characters_data = {
         "y_attack": -4,
     },
 
+    "lizard": {
+        "health": 100,
+        "damage": 25,
+
+        # basic parms - game scale / value
+        "speed": 4,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
+    },
+
+    "guard": {
+        "health": 100,
+        "damage": 30,
+
+        # basic parms - game scale / value
+        "speed": 4,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -15,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -1,
+    },
+
     # -------------------------------------------- Normal Enemies --------------------------------------------
     "knight_yellow": {
         "health": 200,
@@ -188,11 +254,142 @@ characters_data = {
         "y_attack": -4,
     },
 
+    "dwarf": {
+        "health": 250,
+        "damage": 25,
+
+        # basic parms - game scale / value
+        "speed": 5,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
+    },
+
+    "mooseman": {
+        "health": 150,
+        "damage": 25,
+
+        # basic parms - game scale / value
+        "speed": 3,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
+    },
+
+    "rhino": {
+        "health": 300,
+        "damage": 20,
+
+        # basic parms - game scale / value
+        "speed": 4,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -3,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
+    },
 
     # -------------------------------------------- Hard Enemies --------------------------------------------
+    "barbarian": {
+        "health": 500,
+        "damage": 30,
+
+        # basic parms - game scale / value
+        "speed": 5,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 6,  # Scale / value
+        "HitBounceY": 3,  # Scale / value
+
+        # X Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -4,
+    },
+
     "knight_red": {
         "health": 300,
-        "damage": 15,
+        "damage": 35,
 
         # basic parms - game scale / value
         "speed": 4,
@@ -222,4 +419,39 @@ characters_data = {
         "x_attack": 0,
         "y_attack": -4,
     },
+
+    # -------------------------------------------- Boss --------------------------------------------
+    "troll": {
+        "health": 1000,
+        "damage": 40,
+
+        # basic parms - game scale / value
+        "speed": 4,
+        "gravity_speed": 75,
+        "jump_speed": -1,
+
+        # animation value
+        "animation_speed": 0.07,
+
+        # Hit box - game scale * value
+        "x_inflate": -10,
+        "y_inflate": -10,
+
+        # Hits KD - parms
+        "MoveAfterHit_kd": 400,
+        "HitBounceX": 7,  # Scale / value
+        "HitBounceY": 4,  # Scale / value
+
+        # X/Y Change - Scale * Value
+        "idle": True,
+        "x_idle": 0,
+        "y_idle": -4,
+        "run": True,
+        "x_run": 0,
+        "y_run": -4,
+        "attack": True,
+        "x_attack": 0,
+        "y_attack": -7,
+    },
+
 }
