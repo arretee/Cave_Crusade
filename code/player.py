@@ -305,5 +305,3 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
-        if self.attack_rect is not None:
-            pygame.draw.rect(self.screen, "blue", self.attack_rect)

@@ -216,12 +216,8 @@ class Level:
             )
         self.start_num_of_keys = len(self.keys)
 
-        # -------------- Coins --------------
-        layer_coins = tmxdata.get_layer_by_name("coins")
-
 
         # First update
-        # self.update_offsets()
         self.obstacle_sprites.update(self.x_offset)
         self.visible_sprites.update(self.x_offset)
         self.enemies_command_sprites.update(self.x_offset)

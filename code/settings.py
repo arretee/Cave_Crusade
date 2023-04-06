@@ -100,7 +100,7 @@ characters_data = {
         "speed" : 2,
         "gravity_speed": 75,
         "jump_speed": -1,
-        "sword_kd": 2000,
+        "sword_kd": 3000,
         "axe_kd": 2000,
         "bow_kd": 4000,
 
@@ -434,8 +434,8 @@ characters_data = {
         "animation_speed": 0.07,
 
         # Hit box - game scale * value
-        "x_inflate": -10,
-        "y_inflate": -10,
+        "x_inflate": -5,
+        "y_inflate": -6,
 
         # Hits KD - parms
         "MoveAfterHit_kd": 400,
@@ -448,10 +448,10 @@ characters_data = {
         "y_idle": -4,
         "run": True,
         "x_run": 0,
-        "y_run": -4,
+        "y_run": -2,
         "attack": True,
         "x_attack": 0,
-        "y_attack": -7,
+        "y_attack": -5,
     },
 
 }
