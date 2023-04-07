@@ -45,11 +45,6 @@ pathes = {
             "idle": "../graphics/characters/knight_blue/idle",
             "run": "../graphics/characters/knight_blue/run"
         },
-        "knight_green": {
-            "attack": "../graphics/characters/knight_green/attack",
-            "idle": "../graphics/characters/knight_green/idle",
-            "run": "../graphics/characters/knight_green/run"
-        },
         "knight_red": {
             "attack": "../graphics/characters/knight_red/attack",
             "idle": "../graphics/characters/knight_red/idle",

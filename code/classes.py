@@ -65,15 +65,16 @@ class Button(pygame.sprite.Sprite):
             self.image.blit(self.text_image, self.text_rect)  # text
 
 
-class Menu_Player(pygame.sprite.Sprite):
-    def __init__(self, surfaces, pos, group):
+class Menu_Entity(pygame.sprite.Sprite):
+    def __init__(self, surfaces, pos, group, fliped=False):
         super().__init__(group)
+        self.fliped = fliped
 
         self.frame_index = 0
         self.animation_speed = 0.06
 
         self.surfaces = surfaces
-        self.image = surfaces[0]
+        self.image = surfaces[0] if not fliped else pygame.transform.flip(surfaces[0], True, False)
         self.rect = self.image.get_rect(bottomright=pos)
 
     def update(self):
@@ -82,7 +83,7 @@ class Menu_Player(pygame.sprite.Sprite):
         if self.frame_index > len(self.surfaces):
             self.frame_index = 0
 
-        self.image = self.surfaces[int(self.frame_index)]
+        self.image = self.surfaces[int(self.frame_index)] if not self.fliped else pygame.transform.flip(self.surfaces[int(self.frame_index)], True, False)
 
 
 # --------------------------------------- Level Section ---------------------------------------
@@ -273,7 +274,6 @@ class InventorySection(pygame.sprite.Sprite):
         self.image.blit(self.image_tool, self.rect_tool)
 
         self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
-
 
 
 class InventorySection_Counter(pygame.sprite.Sprite):

@@ -3,7 +3,7 @@ from pytmx import load_pygame
 
 from settings import *
 from support_functions import import_folder
-from classes import Tile, Button, Menu_Player
+from classes import Tile, Button, Menu_Entity
 
 
 class Menu:
@@ -34,9 +34,21 @@ class Menu:
         self.logo_rect = self.logo_image.get_rect(center=(self.game.tile_size * 25, self.game.tile_size * 2))
 
         # -------------------------- Player --------------------------
-        Menu_Player(surfaces=import_folder(pathes["character"]["bow"]["idle"], self.game.scale),
+        Menu_Entity(surfaces=import_folder(pathes["character"]["bow"]["idle"], self.game.scale),
                     pos=(self.game.tile_size * 14, self.game.tile_size * 5 + self.game.tile_size * 0.15),
+                    group=self.entity,
+                    fliped=True)
+
+        # Enemy
+        Menu_Entity(surfaces=import_folder(pathes["enemy"]["knight_yellow"]["idle"], self.game.scale),
+                    pos=(self.game.tile_size * 8, self.game.tile_size * 7 + self.game.tile_size * 0.15),
                     group=self.entity)
+
+        Menu_Entity(surfaces=import_folder(pathes["enemy"]["knight_red"]["idle"], self.game.scale),
+                    pos=(self.game.tile_size * 17, self.game.tile_size * 12 + self.game.tile_size * 0.15),
+                    group=self.entity,
+                    fliped=True)
+
 
         # -------------------------- Tiles --------------------------
         tmxdata = load_pygame("../map/menu/menu.tmx")
