@@ -1,4 +1,4 @@
-screen_resolutions = [[1280, 720], [1600, 900], [1920, 1080]]
+screen_resolutions = [[1280, 720], [1366, 768], [1600, 900], [1920, 1080]]
 
 pathes = {
     "character": {
@@ -99,7 +99,7 @@ characters_data = {
         # basic parms - game scale / value
         "speed" : 2,
         "gravity_speed": 75,
-        "jump_speed": -1,
+        "jump_speed": -1.2,
         "sword_kd": 3000,
         "axe_kd": 2000,
         "bow_kd": 4000,

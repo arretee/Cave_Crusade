@@ -135,11 +135,14 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
     def gravity(self):
+        if round(self.direction.y) == 0:
+            self.direction.y = 7 * self.gravity_speed
         self.direction.y += self.gravity_speed
 
     def jump(self):
-        self.onGround = False
-        self.direction.y += self.jump_speed
+        if int(self.direction.y) == 0:
+            self.onGround = False
+            self.direction.y = self.jump_speed
 
     # switch y_change, hitbox, image, rect and animation
     def switch_stasuses(self):
@@ -194,6 +197,8 @@ class Player(pygame.sprite.Sprite):
                     elif self.direction.y < 0:
                         self.direction.y = 0
                         self.hitbox.top = sprite.rect.bottom
+
+
 
     # -------------------------------------- Enemies Collisions --------------------------------------
     def enemyCollision(self):

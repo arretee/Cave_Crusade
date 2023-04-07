@@ -14,24 +14,23 @@ class Game:
         self.screen_width = pygame.display.Info().current_w
         self.screen_height = pygame.display.Info().current_h
 
-        # self.screen_width, self.screen_height = 1920, 1080
-        self.screen_width, self.screen_height = 1600, 900
-        # self.screen_width, self.screen_height = 1280, 720
+        # temp
+        self.screen_width, self.screen_height = screen_resolutions[2]
+
 
 
         if [self.screen_width, self.screen_height] in screen_resolutions:
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         else:
-            self.screen_width = 1280
-            self.screen_height = 720
-            self.screen = pygame.display.set_mode((1280, 720))
+            self.screen_width, self.screen_height = screen_resolutions[0]
+            self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
         self.tile_size = self.screen_width / 32
         self.scale = self.tile_size / 8
 
 
         # Variabels
-        pygame.display.set_caption("Fantasy World")
+        pygame.display.set_caption("Cave Crusade")
         self.clock = pygame.time.Clock()
         self.window = "menu"
 

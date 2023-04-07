@@ -30,7 +30,7 @@ class Menu:
 
     def setup(self):
         # -------------------------- Logo --------------------------
-        self.logo_image = pygame.font.SysFont('cambria', int(self.game.tile_size * 1.8)).render("Retro Rush", True, self.colors['LogoText'])
+        self.logo_image = pygame.font.SysFont('cambria', int(self.game.tile_size * 1.8)).render("Cave Crusade", True, self.colors['LogoText'])
         self.logo_rect = self.logo_image.get_rect(center=(self.game.tile_size * 25, self.game.tile_size * 2))
 
         # -------------------------- Player --------------------------
