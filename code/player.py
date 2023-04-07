@@ -199,7 +199,6 @@ class Player(pygame.sprite.Sprite):
                         self.hitbox.top = sprite.rect.bottom
 
 
-
     # -------------------------------------- Enemies Collisions --------------------------------------
     def enemyCollision(self):
         for sprite in self.enemies.sprites():
@@ -235,7 +234,6 @@ class Player(pygame.sprite.Sprite):
                     self.direction.y = -self.game.scale / self.data["HitBounceY"]
 
 
-
     # -------------------------------------- User Input - Attacks --------------------------------------
     def attack(self):
         if not self.timers[f"{self.weapon}_kd"].active:
@@ -251,6 +249,7 @@ class Player(pygame.sprite.Sprite):
                 if self.facing == "left":
                     self.attack_rect = pygame.Rect((self.hitbox.left - self.game.scale * 5, self.hitbox.centery),
                                                    (self.game.scale * (10 if self.weapon == "sword" else 5), self.game.scale * 3))
+
 
     # -------------------------------------- Animations --------------------------------------
     def animate(self):
@@ -282,6 +281,7 @@ class Player(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect(center=self.hitbox.center)
         # self.hitbox = self.rect.inflate(-self.game.scale * 8, -self.game.scale * 6)
+
 
     # -------------------------------------- Update And Draw --------------------------------------
 

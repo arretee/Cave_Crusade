@@ -6,7 +6,7 @@ from classes import Timer
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, game, enemy_type, pos, data, obstacle_sprites, enemies_command_sprites, island_borders, group):
+    def __init__(self, game, enemy_type, pos, data, obstacle_sprites, enemies_command_sprites, island_borders, moving, facing, group):
         super().__init__(group)
 
         # General
@@ -19,11 +19,11 @@ class Enemy(pygame.sprite.Sprite):
         self.enemies_command_sprites = enemies_command_sprites
 
         # Animations
-        self.status = "run"
+        self.status = "run" if moving else "idle"
         self.import_animations()
         self.animation_index = 0
         self.animation_speed = self.data["animation_speed"]
-        self.animation = self.animations["run"]
+        self.animation = self.animations[self.status]
 
         # Movement
         self.hited = False
@@ -32,8 +32,9 @@ class Enemy(pygame.sprite.Sprite):
         self.timers = {
             "MoveAfterHit_kd": Timer(self.data["MoveAfterHit_kd"], self.stop_baunce),
         }
-        self.direction = pygame.math.Vector2(1, 0)
-        self.facing = "right"
+
+        self.direction = pygame.math.Vector2((1 if moving else 0) * (-1 if facing == "left" else 1), 0)
+        self.facing = facing
 
         self.speed = self.game.scale / self.data["speed"]
         self.gravity_speed = self.game.scale / self.data["gravity_speed"]
@@ -120,6 +121,7 @@ class Enemy(pygame.sprite.Sprite):
 
     # -------------------------------------- Attack --------------------------------------
     def attack(self, player_x):
+        self.hited = True
         if player_x > self.hitbox.centerx:
             self.facing = "right"
         else:
@@ -160,6 +162,8 @@ class Enemy(pygame.sprite.Sprite):
             self.direction.x = 1
         else:
             self.direction.x = -1
+        self.status = "run"
+        self.switch_stasuses()
 
     # -------------------------------------- Animations --------------------------------------
     def import_animations(self):

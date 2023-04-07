@@ -155,6 +155,8 @@ class Level:
                 obstacle_sprites=self.obstacle_sprites,
                 enemies_command_sprites=self.enemies_command_sprites,
                 island_borders=self.island_borders,
+                moving=True if enemy[3] == "moving" else False,
+                facing=enemy[2],
                 group=self.enemies
             )
 

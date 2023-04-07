@@ -445,7 +445,7 @@ characters_data = {
         # X/Y Change - Scale * Value
         "idle": True,
         "x_idle": 0,
-        "y_idle": -4,
+        "y_idle": -2,
         "run": True,
         "x_run": 0,
         "y_run": -2,
