@@ -1,6 +1,7 @@
 import pygame
 from pytmx import load_pygame
 
+from interface import InterFace
 from support_functions import debug
 from classes import Level_Tile, Spike, Arrow, Key
 from player import Player
@@ -42,6 +43,7 @@ class Level:
         # setup
         self.exit_door_status = "closed"
         self.setup()
+        self.InterFace = InterFace(self.game, self, self.player)
 
         # Debug
         self.debug_status = False
@@ -273,6 +275,8 @@ class Level:
         self.update_arrows()
         self.enemies.update(self.x_offset)
 
+        self.InterFace.update()
+
         for key in self.keys.sprites():
             if key.rect.colliderect(self.player.hitbox):
                 key.kill()
@@ -307,6 +311,8 @@ class Level:
         self.visible_sprites.draw(self.screen)
         self.enemies.draw(self.screen)
         self.player.draw()
+
+        self.InterFace.draw()
 
         if self.debug_status:
             print("Mouse pos in Tiles = [X = ", (-self.x_offset + pygame.mouse.get_pos()[0]) // self.game.tile_size, " , Y = ", pygame.mouse.get_pos()[1] // self.game.tile_size, "]")

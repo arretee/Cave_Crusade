@@ -205,4 +205,29 @@ class Key(pygame.sprite.Sprite):
         self.rect.x = self.pos[0] + x_shift
 
 
+# --------------------------------------- InterFace Section ---------------------------------------
 
+class HealtBar(pygame.sprite.Sprite):
+    def __init__(self, pos, size, health, colors):
+        super().__init__()
+        self.tile_size = size[0] / 3
+        self.start_health = health
+
+        self.colors = colors
+        self.pixel_for_hp = (self.tile_size * 3 - self.tile_size * 0.2) / health
+
+        self.image = pygame.Surface(size)
+        self.image.fill(colors["background"])
+        sub_image = pygame.Surface((self.tile_size * 3 - self.tile_size * 0.2, self.tile_size / 2 - self.tile_size * 0.2))
+        sub_image.fill(colors["main"])
+        self.image.blit(sub_image, (self.tile_size * 0.1, self.tile_size * 0.1))
+
+        self.rect = self.image.get_rect(topleft=pos)
+
+    def update(self, health):
+        self.image.fill(self.colors["background"])
+        if health <= 0 :
+            health = 1
+        sub_image = pygame.Surface((self.pixel_for_hp * health, self.tile_size / 2 - self.tile_size * 0.2))
+        sub_image.fill(self.colors["main"])
+        self.image.blit(sub_image, (self.tile_size * 0.1, self.tile_size * 0.1))
