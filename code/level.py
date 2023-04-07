@@ -44,6 +44,7 @@ class Level:
         self.exit_door_status = "closed"
         self.setup()
         self.InterFace = InterFace(self.game, self, self.player)
+        self.InterFace.update_inventory()
 
         # Debug
         self.debug_status = False

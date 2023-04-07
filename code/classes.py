@@ -231,3 +231,108 @@ class HealtBar(pygame.sprite.Sprite):
         sub_image = pygame.Surface((self.pixel_for_hp * health, self.tile_size / 2 - self.tile_size * 0.2))
         sub_image.fill(self.colors["main"])
         self.image.blit(sub_image, (self.tile_size * 0.1, self.tile_size * 0.1))
+
+
+class InventorySection(pygame.sprite.Sprite):
+    def __init__(self, button_num, image, image_size, scale, pos, size, colors):
+        super().__init__()
+
+        self.button_num = button_num
+        self.colors = colors
+        self.size = size
+        self.font = pygame.font.SysFont("cambria", int(scale) * 2)
+
+        self.image = pygame.Surface(self.size)
+        self.rect = self.image.get_rect(topleft=pos)
+
+        self.image_tool = pygame.transform.scale(image, (image_size[0] * scale, image_size[1] * scale))
+        self.rect_tool = self.image_tool.get_rect(center=(self.size[0]/2, self.size[1]/2))
+
+        self.image.fill(self.colors["border"])
+        self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
+        self.sup_image.fill(self.colors["main"])
+        self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
+        self.image.blit(self.image_tool, self.rect_tool)
+
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+
+    def selected(self):
+        self.image.fill(self.colors["border"])
+        self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
+        self.sup_image.fill(self.colors["selected"])
+        self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
+        self.image.blit(self.image_tool, self.rect_tool)
+
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+
+    def unselected(self):
+        self.image.fill(self.colors["border"])
+        self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
+        self.sup_image.fill(self.colors["main"])
+        self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
+        self.image.blit(self.image_tool, self.rect_tool)
+
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+
+
+
+class InventorySection_Counter(pygame.sprite.Sprite):
+    def __init__(self, button_num, image, image_size, scale, pos, size, colors, counter):
+        super().__init__()
+
+        self.button_num = button_num
+        self.size = size
+        self.counter = counter
+
+        self.colors = colors
+        self.font = pygame.font.SysFont("cambria", int(scale) * 2)
+        self.font_counter = pygame.font.SysFont("cambria", int(scale) * 3)
+
+        self.image = pygame.Surface(self.size)
+        self.rect = self.image.get_rect(topleft=pos)
+
+        self.image_tool = pygame.transform.scale(image, (image_size[0] * scale, image_size[1] * scale))
+        self.rect_tool = self.image_tool.get_rect(center=(self.size[0]/2, self.size[1]/2))
+
+        self.image.fill(self.colors["border"])
+        self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
+        self.sup_image.fill(self.colors["main"])
+        self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
+        self.image.blit(self.image_tool, self.rect_tool)
+
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))
+
+    def update_counter(self, counter):
+        self.counter = counter
+
+        self.image.fill(self.colors["border"])
+        self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
+        self.sup_image.fill(self.colors["main"])
+        self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
+        self.image.blit(self.image_tool, self.rect_tool)
+
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))
+
+    def selected(self):
+        self.image.fill(self.colors["border"])
+        self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
+        self.sup_image.fill(self.colors["selected"])
+        self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
+        self.image.blit(self.image_tool, self.rect_tool)
+
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
+                        (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))
+
+    def unselected(self):
+        self.image.fill(self.colors["border"])
+        self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
+        self.sup_image.fill(self.colors["main"])
+        self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
+        self.image.blit(self.image_tool, self.rect_tool)
+
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
+                        (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))

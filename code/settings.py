@@ -103,6 +103,7 @@ characters_data = {
         "sword_kd": 3000,
         "axe_kd": 2000,
         "bow_kd": 4000,
+        "potion_kd": 3000,
 
         # animation value
         "animation_speed": 0.07,

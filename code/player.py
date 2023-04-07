@@ -28,6 +28,9 @@ class Player(pygame.sprite.Sprite):
         self.gravity_speed = self.game.scale / self.data["gravity_speed"]
         self.jump_speed = self.game.scale / self.data["jump_speed"]
 
+        self.arrows = 3
+        self.potion = 3
+
         self.status = "idle"
         self.weapon = "basic"
         self.facing = "left"
@@ -38,6 +41,7 @@ class Player(pygame.sprite.Sprite):
             "sword_kd": Timer(self.data["sword_kd"]),
             "axe_kd": Timer(self.data["axe_kd"]),
             "bow_kd": Timer(self.data["bow_kd"]),
+            "potion_kd": Timer(self.data["potion_kd"]),
 
             # Hit KD
             "MoveAfterHit_kd": Timer(self.data["MoveAfterHit_kd"]),
@@ -91,15 +95,19 @@ class Player(pygame.sprite.Sprite):
                 if self.status != "attack":
                     if event.key == pygame.K_4:
                         self.weapon = "basic"
+                        self.game.level.InterFace.update_inventory()
                         self.switch_stasuses()
                     elif event.key == pygame.K_1:
                         self.weapon = "axe"
+                        self.game.level.InterFace.update_inventory()
                         self.switch_stasuses()
                     elif event.key == pygame.K_2:
                         self.weapon = "bow"
+                        self.game.level.InterFace.update_inventory()
                         self.switch_stasuses()
                     elif event.key == pygame.K_3:
                         self.weapon = "sword"
+                        self.game.level.InterFace.update_inventory()
                         self.switch_stasuses()
 
                 # Jump
@@ -130,6 +138,8 @@ class Player(pygame.sprite.Sprite):
         if mouse_buttons[0]:
             if not self.weapon == "basic":
                 self.attack()
+            else:
+                self.potion_use()
 
         if self.status == "attack" and self.weapon == "bow":
             self.direction.x = 0
@@ -234,9 +244,9 @@ class Player(pygame.sprite.Sprite):
                     self.direction.y = -self.game.scale / self.data["HitBounceY"]
 
 
-    # -------------------------------------- User Input - Attacks --------------------------------------
+    # -------------------------------------- User Input - Attacks / Heal--------------------------------------
     def attack(self):
-        if not self.timers[f"{self.weapon}_kd"].active:
+        if not self.timers[f"{self.weapon}_kd"].active and not (self.weapon == "bow" and self.arrows == 0):
             self.timers[f"{self.weapon}_kd"].activate()
 
             self.status = "attack"
@@ -249,6 +259,17 @@ class Player(pygame.sprite.Sprite):
                 if self.facing == "left":
                     self.attack_rect = pygame.Rect((self.hitbox.left - self.game.scale * 5, self.hitbox.centery),
                                                    (self.game.scale * (10 if self.weapon == "sword" else 5), self.game.scale * 3))
+
+    def potion_use(self):
+        if self.health < 100 and not self.timers["potion_kd"].active:
+            self.health += 25
+            if self.health > 100:
+                self.health = 100
+
+            self.potion -= 1
+            self.timers["potion_kd"].activate()
+            self.game.level.InterFace.inventory[3].update_counter(self.potion)
+            self.game.level.InterFace.update_inventory()
 
 
     # -------------------------------------- Animations --------------------------------------
@@ -266,7 +287,8 @@ class Player(pygame.sprite.Sprite):
                 self.game.level.create_arrow(self.hitbox.left)
             else:
                 self.game.level.create_arrow(self.hitbox.right)
-
+            self.arrows -= 1
+            self.game.level.InterFace.inventory[1].update_counter(self.arrows)
 
 
 
