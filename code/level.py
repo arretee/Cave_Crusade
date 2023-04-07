@@ -286,7 +286,6 @@ class Level:
         if self.exit_door_status == "closed":
             if len(self.keys) == 0 and len(self.enemies) == 0:
                 self.exit_door_status = "open"
-                print(self.exit_door_status)
                 for inxed, sprite in enumerate(self.exit_door.sprites()):
                     sprite.image = self.start_door.sprites()[inxed].image
 
