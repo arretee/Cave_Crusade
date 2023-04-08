@@ -214,15 +214,17 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.enemies.sprites():
             if self.hitbox.colliderect(sprite.hitbox):
                 sprite.attack(self.hitbox.centerx)
-                self.timers["MoveAfterHit_kd"].activate()
-                self.health -= sprite.data["damage"]
-                self.onGround = False
-                if sprite.hitbox.x > self.hitbox.x:
-                    self.direction.x = -self.game.scale / self.data["HitBounceX"]
-                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
-                else:
-                    self.direction.x = self.game.scale / self.data["HitBounceX"]
-                    self.direction.y = -self.game.scale / self.data["HitBounceY"]
+                if not self.timers["MoveAfterHit_kd"].active:
+                    self.timers["MoveAfterHit_kd"].activate()
+                    print("damage")
+                    self.health -= sprite.data["damage"]
+                    self.onGround = False
+                    if sprite.hitbox.x > self.hitbox.x:
+                        self.direction.x = -self.game.scale / self.data["HitBounceX"]
+                        self.direction.y = -self.game.scale / self.data["HitBounceY"]
+                    else:
+                        self.direction.x = self.game.scale / self.data["HitBounceX"]
+                        self.direction.y = -self.game.scale / self.data["HitBounceY"]
 
     def checkHitEnemy(self):
         for sprite in self.enemies.sprites():

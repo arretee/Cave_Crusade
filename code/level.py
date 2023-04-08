@@ -294,7 +294,9 @@ class Level:
         if self.exit_door_status == "open":
             if self.exit_door.sprites()[0].rect.colliderect(self.player.hitbox):
                 self.game.window = "menu"
+                self.game.current_level += 1
                 self.game.level = None
+                self.game.create_level()
 
 
 

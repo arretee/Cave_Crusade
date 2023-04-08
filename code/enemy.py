@@ -133,6 +133,8 @@ class Enemy(pygame.sprite.Sprite):
         self.direction.x = 0
         self.status = "attack"
         self.switch_stasuses()
+        self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * self.data["y_inflate"])
+
 
     def attack_from_player(self, player_x, damage):
         self.timers["MoveAfterHit_kd"].activate()
@@ -148,6 +150,10 @@ class Enemy(pygame.sprite.Sprite):
             self.facing = "left"
 
         self.switch_stasuses()
+        self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * self.data["y_inflate"])
+
+
+
     def checkSpikeCollision(self):
         for sprite in self.game.level.spikes.sprites():
             if self.hitbox.colliderect(sprite.hitbox):

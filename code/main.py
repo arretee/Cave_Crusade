@@ -38,7 +38,7 @@ class Game:
 
         # Setup
         self.menu = Menu(self)
-        self.current_level = 1
+        self.current_level = 2
         self.level = None
         self.pause = None
         self.settingsWindow = None
