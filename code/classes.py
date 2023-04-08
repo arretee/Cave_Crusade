@@ -194,6 +194,10 @@ class Key(pygame.sprite.Sprite):
         super().__init__(groups)
 
         self.pos = pos
+        self.max_y = int(pos[1] + scale * 2)
+        self.min_y = int(pos[1] - scale * 2)
+        self.direction_y = scale / 20
+
         if type == "gold":
             self.image = pygame.image.load("../graphics/items/key_gold.png")
         else:
@@ -205,8 +209,16 @@ class Key(pygame.sprite.Sprite):
     def update(self, x_shift):
         self.rect.x = self.pos[0] + x_shift
 
+        if int(self.pos[1]) == self.max_y:
+            self.direction_y = -self.direction_y
+        elif int(self.pos[1]) == self.min_y:
+            self.direction_y = -self.direction_y
 
-# --------------------------------------- InterFace Section ---------------------------------------
+        self.pos[1] += self.direction_y
+        self.rect.y = self.pos[1]
+
+
+        # --------------------------------------- InterFace Section ---------------------------------------
 
 class HealtBar(pygame.sprite.Sprite):
     def __init__(self, pos, size, health, colors):

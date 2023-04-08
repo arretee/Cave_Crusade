@@ -39,7 +39,7 @@ class Menu:
                     group=self.entity,
                     fliped=True)
 
-        # Enemy
+        # Enemies
         Menu_Entity(surfaces=import_folder(pathes["enemy"]["knight_yellow"]["idle"], self.game.scale),
                     pos=(self.game.tile_size * 8, self.game.tile_size * 7 + self.game.tile_size * 0.15),
                     group=self.entity)
@@ -48,6 +48,10 @@ class Menu:
                     pos=(self.game.tile_size * 17, self.game.tile_size * 12 + self.game.tile_size * 0.15),
                     group=self.entity,
                     fliped=True)
+
+        Menu_Entity(surfaces=import_folder(pathes["enemy"]["knight_blue"]["idle"], self.game.scale),
+                    pos=(self.game.tile_size * 12, self.game.tile_size * 11 + self.game.tile_size * 0.15),
+                    group=self.entity,)
 
 
         # -------------------------- Tiles --------------------------

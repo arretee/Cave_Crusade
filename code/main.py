@@ -40,7 +40,6 @@ class Game:
         self.level = None
 
 
-
     def run(self):
         while True:
             events = pygame.event.get()

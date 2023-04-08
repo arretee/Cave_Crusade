@@ -19,7 +19,14 @@ test_level = {
     },
 }
 
+level_1 = {
+    "tmx_path": "../map/levels/level_1.tmx",
+    "enemies": {
+    },
+}
+
 
 levels = {
-    1: test_level
+    2: test_level,
+    1: level_1
 }
