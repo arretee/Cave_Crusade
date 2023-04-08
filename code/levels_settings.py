@@ -8,25 +8,31 @@
 
 
 
-test_level = {
-    "tmx_path": "../map/levels/level_test1.tmx",
+level1 = {
+    "tmx_path": "../map/levels/level1.tmx",
     "enemies": {
         1: [(7, 7), "knight_blue", "left", "moving"],
-        2: [(10, 13), "troll", "left", "staying"],
-        3: [(46, 8), "knight_red", "left", "moving"],
-        4: [(43, 13), "barbarian", "right", "moving"],
-        5: [(58, 13), "knight_yellow", "right", "moving"],
+        2: [(10, 13), "knight_blue", "left", "staying"],
+        3: [(36, 8), "lizard", "left", "staying"],
+        4: [(43, 8), "knight_blue", "left", "moving"],
+        5: [(72, 8), "guard", "left", "moving"],
+        6: [(80, 5), "lizard", "left", "moving"],
+        7: [(39, 13), "guard", "left", "moving"],
+        8: [(66, 13), "dwarf", "left", "moving"],
+        9: [(83, 13), "guard", "left", "staying"],
+        10: [(52, 7), "guard", "left", "staying"],
+
     },
 }
 
-level_1 = {
-    "tmx_path": "../map/levels/level_1.tmx",
+level2 = {
+    "tmx_path": "../map/levels/level2.tmx",
     "enemies": {
     },
 }
 
 
 levels = {
-    1: test_level,
-    2: level_1
+    1: level1,
+    2: level2
 }

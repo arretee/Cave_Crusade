@@ -115,6 +115,9 @@ class Enemy(pygame.sprite.Sprite):
 
         self.image = self.animations[self.status][0]
         self.rect = self.image.get_rect(center=self.hitbox.center)
+        if self.status == "run":
+            self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * self.data["y_inflate"])
+            self.rect = self.image.get_rect(center=self.hitbox.center)
 
         self.animation = self.animations[self.status]
         self.animation_index = 0
@@ -144,6 +147,7 @@ class Enemy(pygame.sprite.Sprite):
             self.direction.y = -self.game.scale / self.data["HitBounceY"]
             self.facing = "left"
 
+        self.switch_stasuses()
     def checkSpikeCollision(self):
         for sprite in self.game.level.spikes.sprites():
             if self.hitbox.colliderect(sprite.hitbox):

@@ -320,20 +320,10 @@ class Level:
         self.InterFace.draw()
 
         if self.debug_status:
-            print("Mouse pos in Tiles = [X = ", (-self.x_offset + pygame.mouse.get_pos()[0]) // self.game.tile_size, " , Y = ", pygame.mouse.get_pos()[1] // self.game.tile_size, "]")
-
             pygame.draw.rect(self.screen, "red", self.player.hitbox)
             self.enemies_command_sprites.draw(self.screen)
-            debug(self.player.direction)
-
-            for sprite in self.island_borders.sprites():
-                pygame.draw.rect(self.screen, "yellow", sprite.rect)
+            pos = "Mouse pos in Tiles = [X = " + str((-self.x_offset + pygame.mouse.get_pos()[0]) // self.game.tile_size), " , Y = ", str(pygame.mouse.get_pos()[1] // self.game.tile_size), "]"
+            debug(pos)
 
             for sprite in self.enemies.sprites():
                 pygame.draw.rect(self.screen, "red", sprite.hitbox)
-
-            for sprite in self.spikes.sprites():
-                pygame.draw.rect(self.screen, "blue", sprite.hitbox)
-
-            for sprite in self.arrows.sprites():
-                pygame.draw.rect(self.screen, "green", sprite.hitbox)
