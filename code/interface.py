@@ -146,7 +146,7 @@ class InterFace:
                 self.bars.remove(self.keys_bar)
                 if self.mobs_bar in self.bars:
                     self.mobs_bar.rect.topleft = self.keys_bar.rect.topleft
-                    self.mobs_bar.text_rect.center = self.mobs_bar.rect.center
+
 
         if self.mobs_bar.cur_num != 0:
             self.screen.blit(self.mobs_bar.image, self.mobs_bar.rect)

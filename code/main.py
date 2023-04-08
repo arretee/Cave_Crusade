@@ -4,6 +4,7 @@ import sys
 from menu import Menu
 from levels_settings import *
 from level import Level
+from pause import Pause
 from settings import *
 
 
@@ -38,6 +39,7 @@ class Game:
         self.menu = Menu(self)
         self.current_level = 1
         self.level = None
+        self.pause = None
 
 
     def run(self):
@@ -56,6 +58,9 @@ class Game:
                 case "level":
                     self.level.run()
                     self.level.event_loop(events)
+                case "pause":
+                    self.pause.run()
+                    self.pause.event_loop(events)
 
             pygame.display.update()
 
@@ -63,9 +68,28 @@ class Game:
         self.level = Level(self, levels[self.current_level])
         self.window = "level"
 
+    def create_pause(self):
+        self.pause = Pause(self, self.screen.copy())
+        self.window = "pause"
+
     def stop(self):
         pygame.quit()
         sys.exit()
+
+
+    # Buttons From Pause
+    def button_resume(self):
+        self.window = "level"
+        self.pause = None
+
+    def button_to_menu(self):
+        self.window = "menu"
+        self.pause = None
+        self.level = None
+
+    def button_to_level_select(self):
+        pass
+
 
 
 if __name__ == '__main__':

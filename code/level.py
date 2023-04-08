@@ -306,6 +306,8 @@ class Level:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_0:
                     self.debug_status = not self.debug_status
+                if event.key == pygame.K_ESCAPE:
+                    self.game.create_pause()
 
     # -------------------------------- Run --------------------------------
     def run(self):
