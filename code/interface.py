@@ -116,7 +116,6 @@ class InterFace:
         self.bars.append(self.mobs_bar)
 
 
-
     def update_inventory(self):
         # called from player event loop
         for tool in self.inventory:
@@ -135,6 +134,7 @@ class InterFace:
     def update(self):
         self.health_bar.update(self.player.health)
         self.mobs_bar.update(len(self.level.enemies))
+
 
     def draw(self):
         self.screen.blit(self.health_bar.image, self.health_bar.rect)

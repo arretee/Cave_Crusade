@@ -402,4 +402,3 @@ class StatisticShow(pygame.sprite.Sprite):
             sub_image.fill(self.colors["main"])
             self.image.blit(sub_image, (self.tile_size * 0.1, self.tile_size * 0.1))
             self.image.blit(self.text_image, self.text_rect)
-
