@@ -1,6 +1,9 @@
 import pygame
 from pytmx import load_pygame
+import os
 
+
+from menu import Menu
 from settings import *
 from support_functions import import_folder
 from classes import Tile, Button, Button_SelectGroup, Menu_Entity
@@ -19,13 +22,14 @@ class SettingsWindow:
 
             "ButtonMain": '#281d2f',
             "ButtonSecond": '#33233C',
-            "ButtonSelected": "#7B6F81",
+            "ButtonSelected": "#9335C4",
             "ButtonText": '#bf8f30',
             "ButtonBorder": '#241A2A',
         }
 
         # Groups
         self.buttons_res = pygame.sprite.Group()
+        self.buttons = pygame.sprite.Group()
         self.entity = pygame.sprite.Group()
         self.tiles = pygame.sprite.Group()
 
@@ -70,8 +74,7 @@ class SettingsWindow:
                  groups=[self.tiles])
 
         # -------------------------- Resolution Section --------------------------
-        self.res_image = pygame.font.SysFont('cambria', int(self.game.tile_size * 1.2)).render("Resolution", True,
-                                                                                               self.colors['LogoText'])
+        self.res_image = pygame.font.SysFont('cambria', int(self.game.tile_size * 1.2)).render("Resolution", True, self.colors['LogoText'])
         self.res_rect = self.res_image.get_rect(center=(self.game.tile_size * 25, self.game.tile_size * 4))
 
         Button_SelectGroup(
@@ -130,10 +133,37 @@ class SettingsWindow:
             func=self.new_selected_res
         )
 
+        # Apply
+        Button(
+            pos=(self.game.tile_size * 25, self.game.tile_size * 10),
+            main_color=self.colors["ButtonMain"],
+            second_color=self.colors["ButtonSecond"],
+            text_color=self.colors["ButtonText"],
+            border_color=self.colors["ButtonBorder"],
+            text="Apply",
+            font=pygame.font.SysFont('cambria', int(self.game.tile_size * 0.7)),
+            size=(self.game.tile_size * 4, self.game.tile_size * 1.5),
+            group=self.buttons,
+            func=self.apply_resolution
+        )
+
+        # Back
+        Button(
+            pos=(self.game.tile_size * 25, self.game.tile_size * 16),
+            main_color=self.colors["ButtonMain"],
+            second_color=self.colors["ButtonSecond"],
+            text_color=self.colors["ButtonText"],
+            border_color=self.colors["ButtonBorder"],
+            text="Back",
+            font=pygame.font.SysFont('cambria', int(self.game.tile_size * 0.7)),
+            size=(self.game.tile_size * 4, self.game.tile_size * 1.5),
+            group=self.buttons,
+            func=self.game.button_to_menu
+        )
+
     def new_selected_res(self, res):
         self.selected_resolution = [int(res.split(" x ")[0]), int(res.split(" x ")[1])]
         self.update_selected()
-        print(self.selected_resolution)
 
     def update_selected(self):
         text = str(self.selected_resolution[0]) + " x " + str(self.selected_resolution[1])
@@ -143,14 +173,36 @@ class SettingsWindow:
             else:
                 sprite.unselect()
 
+    def apply_resolution(self):
+        if self.current_resolution != self.selected_resolution:
+            self.game.menu = None
+            self.game.settingsWindow = None
+            self.screen = pygame.display.set_mode(self.selected_resolution)
+            self.game.screen_width, self.game.screen_height = self.selected_resolution
+            self.game.tile_size = self.game.screen_width / 32
+            self.game.scale = self.game.tile_size / 8
+
+            self.game.menu = Menu(self.game)
+            self.game.menu.setup()
+            self.game.window = "menu"
+
+            if self.game.screen_width == pygame.display.Info().current_w and self.game.screen_height == pygame.display.Info().current_h:
+                os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (0, 0)
+                os.environ['SDL_VIDEO_CENTERED'] = '0'
+
+
+
     def update(self):
+        mouse_pos = pygame.mouse.get_pos()
         self.entity.update()
+        self.buttons_res.update(mouse_pos)
+        self.buttons.update(mouse_pos)
 
     def event_loop(self, events):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                for sprite in self.buttons_res.sprites():
+                for sprite in self.buttons_res.sprites() + self.buttons.sprites():
                     if sprite.rect.collidepoint(mouse_pos):
                         sprite.call_function()
 
@@ -167,3 +219,4 @@ class SettingsWindow:
         self.tiles.draw(self.screen)
         self.entity.draw(self.screen)
         self.buttons_res.draw(self.screen)
+        self.buttons.draw(self.screen)

@@ -101,6 +101,7 @@ class Game:
         self.window = "menu"
         self.pause = None
         self.level = None
+        self.settingsWindow = None
 
     def button_to_level_select(self):
         pass

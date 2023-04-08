@@ -12,6 +12,7 @@ class Menu:
         self.game = game
         self.screen = self.game.screen
 
+
         self.colors = {
             "BackGround": '#281d2f',
             "LogoText": '#bf8f30',
