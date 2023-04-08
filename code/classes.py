@@ -363,3 +363,43 @@ class InventorySection_Counter(pygame.sprite.Sprite):
                         (self.size[0] * 0.1, self.size[1] * 0.05))
 
 
+class StatisticShow(pygame.sprite.Sprite):
+    def __init__(self, text, scale, colors, max_num, size, pos):
+        super().__init__()
+        # General
+        self.text = text
+        self.size = size
+        self.colors = colors
+        self.tile_size = scale * 8
+        self.pos = pos
+        self.font = pygame.font.SysFont("cambria", int(scale) * 3)
+        self.max_num = max_num
+        self.cur_num = max_num
+        self.pixels_for_one = (size[0] - self.tile_size * 0.2) / max_num
+
+        self.image = pygame.Surface(size).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+
+        # sup images
+        sup_image = pygame.Surface((size[0] - self.tile_size * 0.2, size[1] - self.tile_size * 0.2))
+        sup_image.fill(self.colors["main"])
+
+        self.text_image = self.font.render(self.text, True, self.colors['text'])
+        self.text_rect = self.text_image.get_rect(center=(self.rect.centerx-pos[0], self.rect.centery-pos[1]))
+
+
+        # draw everything
+        self.image.fill(self.colors["borders"])
+        self.image.blit(sup_image, (self.tile_size * 0.1, self.tile_size * 0.1))
+        self.image.blit(self.text_image, self.text_rect)
+
+
+    def update(self, cur_num):
+        if self.cur_num != cur_num:
+            self.cur_num = cur_num
+            self.image.fill(self.colors["borders"])
+            sub_image = pygame.Surface((self.pixels_for_one * cur_num, self.size[1] - self.tile_size * 0.2))
+            sub_image.fill(self.colors["main"])
+            self.image.blit(sub_image, (self.tile_size * 0.1, self.tile_size * 0.1))
+            self.image.blit(self.text_image, self.text_rect)
+

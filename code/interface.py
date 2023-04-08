@@ -1,6 +1,6 @@
 import pygame
 
-from classes import HealtBar, InventorySection, InventorySection_Counter
+from classes import HealtBar, InventorySection, InventorySection_Counter, StatisticShow
 
 
 class InterFace:
@@ -9,6 +9,8 @@ class InterFace:
         self.level = level
         self.screen = self.game.screen
         self.player = player
+
+        self.bars = []
 
         self.setup()
 
@@ -80,7 +82,7 @@ class InterFace:
         # Potion
         self.inventory.append(
             InventorySection_Counter(
-                button_num=3,
+                button_num=4,
                 image=pygame.image.load("../graphics/items/potion_red.png").convert_alpha(),
                 image_size=[7, 8],
                 scale=self.game.scale,
@@ -92,7 +94,28 @@ class InterFace:
         )
 
         # ------------------------------- Keys Show -------------------------------
+        self.keys_bar = StatisticShow(
+            text="Keys",
+            scale=self.game.scale,
+            colors={"borders": 'black', "main": "#BBBE13", "text": "#FFF1F3"},
+            max_num=self.level.start_num_of_keys,
+            size=(self.game.tile_size * 3, self.game.tile_size / 2),
+            pos=(self.game.screen_width - self.game.tile_size * 0.5 - self.game.tile_size * 7, self.game.tile_size * 0.5)
+        )
+        self.bars.append(self.keys_bar)
+
         # ------------------------------- Mobs Show -------------------------------
+        self.mobs_bar = StatisticShow(
+            text="Mobs",
+            scale=self.game.scale,
+            colors={"borders": 'black', "main": "#AF70FF", "text": "#FFF1F3"},
+            max_num=len(self.level.enemies),
+            size=(self.game.tile_size * 3, self.game.tile_size / 2),
+            pos=(self.game.screen_width - self.game.tile_size * 0.5 - self.game.tile_size * 7, self.game.tile_size * 1.5)
+        )
+        self.bars.append(self.mobs_bar)
+
+
 
     def update_inventory(self):
         # called from player event loop
@@ -111,8 +134,25 @@ class InterFace:
 
     def update(self):
         self.health_bar.update(self.player.health)
+        self.mobs_bar.update(len(self.level.enemies))
 
     def draw(self):
         self.screen.blit(self.health_bar.image, self.health_bar.rect)
+
+        if self.keys_bar.cur_num != 0:
+            self.screen.blit(self.keys_bar.image, self.keys_bar.rect)
+        else:
+            if self.keys_bar in self.bars:
+                self.bars.remove(self.keys_bar)
+                if self.mobs_bar in self.bars:
+                    self.mobs_bar.rect.topleft = self.keys_bar.rect.topleft
+                    self.mobs_bar.text_rect.center = self.mobs_bar.rect.center
+
+        if self.mobs_bar.cur_num != 0:
+            self.screen.blit(self.mobs_bar.image, self.mobs_bar.rect)
+        else:
+            if self.mobs_bar in self.bars:
+                self.bars.remove(self.mobs_bar)
+
         for section in self.inventory:
             self.screen.blit(section.image, section.rect)

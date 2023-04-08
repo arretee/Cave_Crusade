@@ -283,6 +283,7 @@ class Level:
         for key in self.keys.sprites():
             if key.rect.colliderect(self.player.hitbox):
                 key.kill()
+                self.InterFace.keys_bar.update(len(self.keys))
 
         if self.exit_door_status == "closed":
             if len(self.keys) == 0 and len(self.enemies) == 0:
