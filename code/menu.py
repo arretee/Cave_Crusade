@@ -90,7 +90,7 @@ class Menu:
             , font=pygame.font.SysFont('cambria', int(self.game.tile_size * 1.4))
             , size=(self.game.tile_size * 5.3, self.game.tile_size * 2)
             , group=self.buttons
-            , func=self.level_select
+            , func=self.game.level_select
         )
 
         # Settings
@@ -104,7 +104,7 @@ class Menu:
             , font=pygame.font.SysFont('cambria', int(self.game.tile_size * 1.4))
             , size=(self.game.tile_size * 5.3, self.game.tile_size * 2)
             , group=self.buttons
-            , func=self.to_settings
+            , func=self.game.create_settingsWindow
         )
 
         # Exit
@@ -145,13 +145,6 @@ class Menu:
         self.tiles.draw(self.screen)
         self.entity.draw(self.screen)
         self.buttons.draw(self.screen)
-
-    # ----------------------------------------------------- Buttons Functions -----------------------------------------------------
-    def level_select(self):
-        pass
-
-    def to_settings(self):
-        pass
 
 
 
