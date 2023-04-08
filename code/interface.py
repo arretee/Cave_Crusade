@@ -13,7 +13,7 @@ class InterFace:
         self.setup()
 
     def setup(self):
-        # Health Bar
+        # ------------------------------- Health Bar -------------------------------
         self.health_bar = HealtBar(
             pos=(self.game.screen_width - self.game.tile_size * 0.5 - self.game.tile_size * 3, self.game.tile_size * 0.5),
             size=(self.game.tile_size * 3, self.game.tile_size / 2),
@@ -90,6 +90,9 @@ class InterFace:
                 counter=self.player.potion,
             )
         )
+
+        # ------------------------------- Keys Show -------------------------------
+        # ------------------------------- Mobs Show -------------------------------
 
     def update_inventory(self):
         # called from player event loop

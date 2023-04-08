@@ -289,6 +289,7 @@ class Player(pygame.sprite.Sprite):
                 self.game.level.create_arrow(self.hitbox.right)
             self.arrows -= 1
             self.game.level.InterFace.inventory[1].update_counter(self.arrows)
+            self.game.level.InterFace.update_inventory()
 
 
 

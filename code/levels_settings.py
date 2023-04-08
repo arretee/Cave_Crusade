@@ -27,6 +27,6 @@ level_1 = {
 
 
 levels = {
-    0: test_level,
-    1: level_1
+    1: test_level,
+    2: level_1
 }

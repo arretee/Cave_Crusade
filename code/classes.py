@@ -83,7 +83,8 @@ class Menu_Entity(pygame.sprite.Sprite):
         if self.frame_index > len(self.surfaces):
             self.frame_index = 0
 
-        self.image = self.surfaces[int(self.frame_index)] if not self.fliped else pygame.transform.flip(self.surfaces[int(self.frame_index)], True, False)
+        self.image = self.surfaces[int(self.frame_index)] if not self.fliped else pygame.transform.flip(
+            self.surfaces[int(self.frame_index)], True, False)
 
 
 # --------------------------------------- Level Section ---------------------------------------
@@ -136,11 +137,13 @@ class Spike(pygame.sprite.Sprite):
         if status == "left":
             self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=self.rect.topleft)
         elif status == "right":
-            self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=(self.rect.right - hitbox_size[0], self.rect.top))
+            self.hitbox = pygame.Surface(hitbox_size).get_rect(
+                topleft=(self.rect.right - hitbox_size[0], self.rect.top))
         elif status == "top":
             self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=self.rect.topleft)
         elif status == "bottom":
-            self.hitbox = pygame.Surface(hitbox_size).get_rect(topleft=(self.rect.left, self.rect.bottom - hitbox_size[1]))
+            self.hitbox = pygame.Surface(hitbox_size).get_rect(
+                topleft=(self.rect.left, self.rect.bottom - hitbox_size[1]))
         self.hitbox_pos = self.hitbox.topleft
 
     def update(self, x_shift):
@@ -152,7 +155,6 @@ class Arrow(pygame.sprite.Sprite):
     def __init__(self, start_pos, direction, speed, obstacle_sprites, groups, tilesize):
         super().__init__(groups)
         self.obstacle_sprites = obstacle_sprites
-
 
         self.pos = start_pos
         if direction == "left":
@@ -217,9 +219,10 @@ class Key(pygame.sprite.Sprite):
         self.pos[1] += self.direction_y
         self.rect.y = self.pos[1]
 
-
         # --------------------------------------- InterFace Section ---------------------------------------
 
+
+# --------------------------------------- Interface ---------------------------------------
 class HealtBar(pygame.sprite.Sprite):
     def __init__(self, pos, size, health, colors):
         super().__init__()
@@ -231,7 +234,8 @@ class HealtBar(pygame.sprite.Sprite):
 
         self.image = pygame.Surface(size)
         self.image.fill(colors["background"])
-        sub_image = pygame.Surface((self.tile_size * 3 - self.tile_size * 0.2, self.tile_size / 2 - self.tile_size * 0.2))
+        sub_image = pygame.Surface(
+            (self.tile_size * 3 - self.tile_size * 0.2, self.tile_size / 2 - self.tile_size * 0.2))
         sub_image.fill(colors["main"])
         self.image.blit(sub_image, (self.tile_size * 0.1, self.tile_size * 0.1))
 
@@ -239,7 +243,7 @@ class HealtBar(pygame.sprite.Sprite):
 
     def update(self, health):
         self.image.fill(self.colors["background"])
-        if health <= 0 :
+        if health <= 0:
             health = 1
         sub_image = pygame.Surface((self.pixel_for_hp * health, self.tile_size / 2 - self.tile_size * 0.2))
         sub_image.fill(self.colors["main"])
@@ -259,7 +263,7 @@ class InventorySection(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
         self.image_tool = pygame.transform.scale(image, (image_size[0] * scale, image_size[1] * scale))
-        self.rect_tool = self.image_tool.get_rect(center=(self.size[0]/2, self.size[1]/2))
+        self.rect_tool = self.image_tool.get_rect(center=(self.size[0] / 2, self.size[1] / 2))
 
         self.image.fill(self.colors["border"])
         self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
@@ -267,7 +271,8 @@ class InventorySection(pygame.sprite.Sprite):
         self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
         self.image.blit(self.image_tool, self.rect_tool)
 
-        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
+                        (self.size[0] * 0.75, self.size[1] * 0.66))
 
     def selected(self):
         self.image.fill(self.colors["border"])
@@ -276,7 +281,8 @@ class InventorySection(pygame.sprite.Sprite):
         self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
         self.image.blit(self.image_tool, self.rect_tool)
 
-        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
+                        (self.size[0] * 0.75, self.size[1] * 0.66))
 
     def unselected(self):
         self.image.fill(self.colors["border"])
@@ -285,7 +291,8 @@ class InventorySection(pygame.sprite.Sprite):
         self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
         self.image.blit(self.image_tool, self.rect_tool)
 
-        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
+                        (self.size[0] * 0.75, self.size[1] * 0.66))
 
 
 class InventorySection_Counter(pygame.sprite.Sprite):
@@ -304,7 +311,7 @@ class InventorySection_Counter(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
         self.image_tool = pygame.transform.scale(image, (image_size[0] * scale, image_size[1] * scale))
-        self.rect_tool = self.image_tool.get_rect(center=(self.size[0]/2, self.size[1]/2))
+        self.rect_tool = self.image_tool.get_rect(center=(self.size[0] / 2, self.size[1] / 2))
 
         self.image.fill(self.colors["border"])
         self.sup_image = pygame.Surface((self.size[0] * 0.8, self.size[1] * 0.8))
@@ -312,8 +319,10 @@ class InventorySection_Counter(pygame.sprite.Sprite):
         self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
         self.image.blit(self.image_tool, self.rect_tool)
 
-        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
-        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
+                        (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']),
+                        (self.size[0] * 0.1, self.size[1] * 0.05))
 
     def update_counter(self, counter):
         self.counter = counter
@@ -324,8 +333,10 @@ class InventorySection_Counter(pygame.sprite.Sprite):
         self.image.blit(self.sup_image, (self.size[0] * 0.1, self.size[1] * 0.1))
         self.image.blit(self.image_tool, self.rect_tool)
 
-        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']), (self.size[0] * 0.75, self.size[1] * 0.66))
-        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))
+        self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
+                        (self.size[0] * 0.75, self.size[1] * 0.66))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']),
+                        (self.size[0] * 0.1, self.size[1] * 0.05))
 
     def selected(self):
         self.image.fill(self.colors["border"])
@@ -336,7 +347,8 @@ class InventorySection_Counter(pygame.sprite.Sprite):
 
         self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
                         (self.size[0] * 0.75, self.size[1] * 0.66))
-        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']),
+                        (self.size[0] * 0.1, self.size[1] * 0.05))
 
     def unselected(self):
         self.image.fill(self.colors["border"])
@@ -347,4 +359,7 @@ class InventorySection_Counter(pygame.sprite.Sprite):
 
         self.image.blit(self.font.render(str(self.button_num), True, self.colors['text']),
                         (self.size[0] * 0.75, self.size[1] * 0.66))
-        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']), (self.size[0] * 0.1, self.size[1] * 0.05))
+        self.image.blit(self.font_counter.render(str(self.counter), True, self.colors['text']),
+                        (self.size[0] * 0.1, self.size[1] * 0.05))
+
+
