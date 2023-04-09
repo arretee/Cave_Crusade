@@ -13,11 +13,14 @@ class Game:
     def __init__(self):
         pygame.init()
         # Screen
+        self.original_width = pygame.display.Info().current_w
+        self.original_height = pygame.display.Info().current_h
+
         self.screen_width = pygame.display.Info().current_w
         self.screen_height = pygame.display.Info().current_h
 
         # temp
-        self.screen_width, self.screen_height = screen_resolutions[2]
+        # self.screen_width, self.screen_height = screen_resolutions[2]
 
 
 
@@ -38,7 +41,7 @@ class Game:
 
         # Setup
         self.menu = Menu(self)
-        self.current_level = 2
+        self.current_level = 1
         self.level = None
         self.pause = None
         self.settingsWindow = None

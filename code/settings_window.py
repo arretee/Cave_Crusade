@@ -98,7 +98,7 @@ class SettingsWindow:
             selected_color=self.colors["ButtonSelected"],
             text_color=self.colors["ButtonText"],
             border_color=self.colors["ButtonBorder"],
-            text="1366 x 768",
+            text="1376 x 774",
             font=pygame.font.SysFont('cambria', int(self.game.tile_size * 0.7)),
             size=(self.game.tile_size * 4, self.game.tile_size * 1.5),
             group=self.buttons_res,
@@ -186,11 +186,15 @@ class SettingsWindow:
             self.game.menu.setup()
             self.game.window = "menu"
 
-            if self.game.screen_width == pygame.display.Info().current_w and self.game.screen_height == pygame.display.Info().current_h:
+
+            if self.game.screen_width == self.game.original_width and self.game.screen_height == self.game.original_height:
+                print("here")
                 os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (0, 0)
                 os.environ['SDL_VIDEO_CENTERED'] = '0'
 
-
+            else:
+                os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (-500, 60)
+                os.environ['SDL_VIDEO_CENTERED'] = '0'
 
     def update(self):
         mouse_pos = pygame.mouse.get_pos()

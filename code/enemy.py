@@ -133,7 +133,6 @@ class Enemy(pygame.sprite.Sprite):
         self.direction.x = 0
         self.status = "attack"
         self.switch_stasuses()
-        self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * self.data["y_inflate"])
 
 
     def attack_from_player(self, player_x, damage):
@@ -195,13 +194,13 @@ class Enemy(pygame.sprite.Sprite):
             self.animation_index = 0
             self.status = "run"
             self.switch_stasuses()
+            self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"],
+                                            self.game.scale * self.data["y_inflate"])
+
             if self.facing == "left":
                 self.direction.x = -1
             else:
                 self.direction.x = 1
-
-        elif self.animation_index >= len(self.animation):
-            self.animation_index = 0
 
         if self.animation_index >= len(self.animation):
             self.animation_index = 0
