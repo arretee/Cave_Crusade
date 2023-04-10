@@ -139,8 +139,12 @@ class Enemy(pygame.sprite.Sprite):
         self.switch_stasuses()
 
         if change:
-            self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"],
-                                            self.game.scale * self.data["y_inflate"])
+            if self.enemy_type == "guard":
+                self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * (self.data["y_inflate"] + 5))
+            elif self.enemy_type == "troll":
+                self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * (self.data["y_inflate"] - 5))
+            else:
+                self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"], self.game.scale * self.data["y_inflate"])
 
     def attack_from_player(self, player_x, damage):
         self.timers["MoveAfterHit_kd"].activate()

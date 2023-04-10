@@ -213,7 +213,7 @@ characters_data = {
         "y_run": -4,
         "attack": True,
         "x_attack": 0,
-        "y_attack": -4,
+        "y_attack": -1,
     },
 
     # -------------------------------------------- Normal Enemies --------------------------------------------

@@ -216,7 +216,6 @@ class Player(pygame.sprite.Sprite):
                 sprite.attack(self.hitbox.centerx)
                 if not self.timers["MoveAfterHit_kd"].active:
                     self.timers["MoveAfterHit_kd"].activate()
-                    print("damage")
                     self.health -= sprite.data["damage"]
                     self.onGround = False
                     if sprite.hitbox.x > self.hitbox.x:
