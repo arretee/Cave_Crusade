@@ -47,7 +47,38 @@ level2 = {
 level3 = {
     "tmx_path": "../map/levels/level3.tmx",
     "enemies": {
-        1: [(17, 15), "troll", "left", "staying"],
+        1: [(17, 15), "knight_blue", "left", "staying"],
+        2: [(23, 15), "knight_yellow", "left", "moving"],
+        3: [(29, 15), "knight_blue", "right", "staying"],
+
+        4: [(58, 14), "knight_red", "right", "moving"],
+
+        5: [(38, 9), "knight_blue", "right", "staying"],
+        7: [(32, 9), "rhino", "right", "moving"],
+        8: [(26, 9), "knight_blue", "left", "staying"],
+
+        9: [(14, 10), "lizard", "left", "moving"],
+        10: [(7, 9), "rhino", "left", "moving"],
+
+        11: [(53, 5), "knight_blue", "left", "moving"],
+        12: [(59, 5), "knight_blue", "right", "moving"],
+
+        13: [(43, 3), "guard", "right", "moving"],
+
+        14: [(33, 2), "knight_yellow", "right", "moving"],
+        15: [(12, 3), "knight_blue", "right", "moving"],
+
+        16: [(69, 3), "knight_blue", "right", "moving"],
+        17: [(84, 2), "lizard", "right", "moving"],
+        18: [(98, 3), "knight_yellow", "right", "moving"],
+
+        19: [(79, 8), "knight_blue", "right", "moving"],
+        20: [(92, 9), "guard", "right", "moving"],
+        21: [(106, 9), "lizard", "right", "moving"],
+
+        22: [(78, 15), "guard", "right", "moving"],
+        23: [(96, 15), "knight_blue", "right", "moving"],
+        24: [(106, 14), "knight_yellow", "right", "moving"],
     },
 }
 
