@@ -131,9 +131,16 @@ class Enemy(pygame.sprite.Sprite):
             self.facing = "left"
 
         self.direction.x = 0
+        if self.status == "idle":
+            change = True
+        else:
+            change = False
         self.status = "attack"
         self.switch_stasuses()
 
+        if change:
+            self.hitbox = self.rect.inflate(self.game.scale * self.data["x_inflate"],
+                                            self.game.scale * self.data["y_inflate"])
 
     def attack_from_player(self, player_x, damage):
         self.timers["MoveAfterHit_kd"].activate()

@@ -41,7 +41,7 @@ class Game:
 
         # Setup
         self.menu = Menu(self)
-        self.current_level = 1
+        self.current_level = 3
         self.level = None
         self.pause = None
         self.settingsWindow = None
@@ -73,8 +73,12 @@ class Game:
             pygame.display.update()
 
     def create_level(self):
-        self.level = Level(self, levels[self.current_level])
-        self.window = "level"
+        if self.current_level > len(levels.keys()):
+            self.window = "menu"
+            self.level = None
+        else:
+            self.level = Level(self, levels[self.current_level])
+            self.window = "level"
 
     def create_pause(self):
         self.pause = Pause(self, self.screen.copy())

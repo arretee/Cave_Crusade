@@ -44,8 +44,19 @@ level2 = {
     },
 }
 
+level3 = {
+    "tmx_path": "../map/levels/level3.tmx",
+    "enemies": {
+        1: [(17, 15), "knight_blue", "left", "staying"],
+        2: [(23, 15), "knight_yellow", "left", "moving"],
+        3: [(29, 15), "knight_blue", "right", "staying"],
+    },
+}
+
+
 
 levels = {
     1: level1,
-    2: level2
+    2: level2,
+    3: level3,
 }
